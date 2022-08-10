@@ -28,5 +28,4 @@ export default function (requests) {
     const tags = { tag: { type: requests[i][4].tags.type } };
     processResponse(res, tags);
   });
-  sleep(1); // 1s sleep between iterations.
 }
