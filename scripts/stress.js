@@ -1,69 +1,56 @@
 import http from 'k6/http';
-import { group, sleep } from 'k6';
+import { group } from 'k6';
+import { Rate } from 'k6/metrics';
 import {
-  makeGraphQLQuery,
-  processResponse,
-  searchQueries,
-  uri,
   thresholds,
-  graphqlEndpoint,
-  params,
+  getGraphQLBatchRequests,
+  processBatchResponses,
+  processResponse,
+  uri,
 } from './utils/helpers.js';
+export let successRate = new Rate('successful_requests');
 /* 
-EACH VU TO SEND 50+ REQUESTS TO GRAPHQL ENDPOINT PER ITERATION
+Batch multiple HTTP requests together, to issue them in parallel over multiple TCP connections.
+This test allows each VUs to perform multiple requests at once, concurrently
 */
 // TEST SCRIPT CONFIGS
-export const options = { thresholds };
+export const options = { thresholds, batch: 55, batchPerHost: 0 };
 // TEST SCRIPT IN-IT
 export function setup() {
   console.log('Testing Instance: ' + uri);
+  return getGraphQLBatchRequests();
 }
 // TEST SCRIPT
-export default function () {
-  group('Frontend', function () {
+export default function (requests) {
+  //   SEARCH REQUESTS FOR LITERAL SEARCHES
+  group('literal', function () {
+    const searchType = 'literal';
+    const responses = http.batch(requests[searchType]);
+    processBatchResponses(responses, searchType);
+  });
+  //   SEARCH REQUESTS FOR REGEXP SEARCHES
+  group('regexp', function () {
+    const searchType = 'regexp';
+    const responses = http.batch(requests[searchType]);
+    processBatchResponses(responses, searchType);
+  });
+  //   SEARCH REQUESTS FOR STRUCTURAL SEARCHES
+  group('structural', function () {
+    const searchType = 'structural';
+    const responses = http.batch(requests[searchType]);
+    processBatchResponses(responses, searchType);
+  });
+  //   SEARCH REQUESTS FOR UNINDEXED SEARCHES
+  group('unindexed', function () {
+    const searchType = 'unindexed';
+    const responses = http.batch(requests[searchType]);
+    processBatchResponses(responses, searchType);
+  });
+  //   REQUEST TO FRONTEND URL
+  group('frontend', function () {
     const searchType = 'frontend';
     const tags = { tag: { type: searchType } };
     const res = http.get(uri, null, tags);
     processResponse(res, tags);
-  });
-  group('Literal', function () {
-    const searchType = 'literal';
-    const tags = { tag: { type: searchType } };
-    searchQueries[searchType].forEach((searchQuery) => {
-      const body = makeGraphQLQuery('search', searchQuery.query);
-      const res = http.post(graphqlEndpoint.toString(), body, params, tags);
-      processResponse(res, tags);
-      sleep(1);
-    });
-  });
-  group('Regexp', function () {
-    const searchType = 'regexp';
-    const tags = { tag: { type: searchType } };
-    searchQueries[searchType].forEach((searchQuery) => {
-      const body = makeGraphQLQuery('search', searchQuery.query);
-      const res = http.post(graphqlEndpoint.toString(), body, params, tags);
-      processResponse(res, tags);
-      sleep(1);
-    });
-  });
-  group('Structural', function () {
-    const searchType = 'structural';
-    const tags = { tag: { type: searchType } };
-    searchQueries[searchType].forEach((searchQuery) => {
-      const body = makeGraphQLQuery('search', searchQuery.query);
-      const res = http.post(graphqlEndpoint.toString(), body, params, tags);
-      processResponse(res, tags);
-      sleep(1);
-    });
-  });
-  group('Unindexed', function () {
-    const searchType = 'unindexed';
-    const tags = { tag: { type: searchType } };
-    searchQueries[searchType].forEach((searchQuery) => {
-      const body = makeGraphQLQuery('search', searchQuery.query);
-      const res = http.post(graphqlEndpoint.toString(), body, params, tags);
-      processResponse(res, tags);
-      sleep(1);
-    });
   });
 }

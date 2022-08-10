@@ -58,12 +58,22 @@ export function getGraphQLBatchRequests() {
   };
 }
 
-// FUNCTION TO CREATE BATCH GRAPHQL REQUESTS
+// FUNCTION TO GROUP ALL BATCH GRAPHQL REQUESTS
+export function groupGraphQLBatchRequests() {
+  const groupedRequests = [];
+  searchQueries.types.forEach((type) => {
+    const requests = makeGraphQLRequests(type);
+    groupedRequests.push(...requests);
+  });
+  return groupedRequests;
+}
+
+// FUNCTION TO CREATE BATCH GRAPHQL REQUESTS BY SEARCH TYPE
 export function makeGraphQLRequests(search_type) {
   const queries = searchQueries[search_type];
   const requests = [];
   queries.forEach((query) => {
-    const tags = { tags: { type: query.type } };
+    const tags = { tags: { type: search_type } };
     const body = makeGraphQLQuery('search', query.query);
     const request = ['POST', graphqlEndpoint, body, params, tags];
     requests.push(request);
@@ -71,7 +81,7 @@ export function makeGraphQLRequests(search_type) {
   return requests;
 }
 
-// PROCESS BATCH RESPONSES
+// PROCESS RESPONSES IN BATCH
 export function processBatchResponses(responses, searchType) {
   const tags = { tag: { type: searchType } };
   responses.forEach((res) => {
@@ -79,7 +89,7 @@ export function processBatchResponses(responses, searchType) {
   });
 }
 
-// PROCESS RESPONSE
+// PROCESS INDIVIDUAL RESPONSE
 export function processResponse(response, tags) {
   TTFB.add(response.timings.waiting, tags.tag);
   check(response, { [tags.tag.type]: (res) => res.status === 200 }, tags.tag);

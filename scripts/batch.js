@@ -1,11 +1,10 @@
 import http from 'k6/http';
-import { group } from 'k6';
 import { Rate } from 'k6/metrics';
+import { sleep } from 'k6';
 import {
   thresholds,
-  getGraphQLBatchRequests,
-  processBatchResponses,
   processResponse,
+  groupGraphQLBatchRequests,
   uri,
 } from './utils/helpers.js';
 export let successRate = new Rate('successful_requests');
@@ -18,39 +17,16 @@ export const options = { thresholds, batch: 55, batchPerHost: 0 };
 // TEST SCRIPT IN-IT
 export function setup() {
   console.log('Testing Instance: ' + uri);
-  return getGraphQLBatchRequests();
+  // group all the search queries together to process requests with batch
+  return groupGraphQLBatchRequests();
 }
-// TEST SCRIPT
+// MAIN TEST SCRIPT
+// SEARCH REQUESTS FOR EACH VU TO EXECUTE
 export default function (requests) {
-  //   SEARCH REQUESTS FOR LITERAL SEARCHES
-  group('literal', function () {
-    const searchType = 'literal';
-    const responses = http.batch(requests[searchType]);
-    processBatchResponses(responses, searchType);
-  });
-  //   SEARCH REQUESTS FOR REGEXP SEARCHES
-  group('regexp', function () {
-    const searchType = 'regexp';
-    const responses = http.batch(requests[searchType]);
-    processBatchResponses(responses, searchType);
-  });
-  //   SEARCH REQUESTS FOR STRUCTURAL SEARCHES
-  group('structural', function () {
-    const searchType = 'structural';
-    const responses = http.batch(requests[searchType]);
-    processBatchResponses(responses, searchType);
-  });
-  //   SEARCH REQUESTS FOR UNINDEXED SEARCHES
-  group('unindexed', function () {
-    const searchType = 'unindexed';
-    const responses = http.batch(requests[searchType]);
-    processBatchResponses(responses, searchType);
-  });
-  //   REQUEST TO FRONTEND URL
-  group('frontend', function () {
-    const searchType = 'frontend';
-    const tags = { tag: { type: searchType } };
-    const res = http.get(uri, null, tags);
+  const responses = http.batch(requests);
+  responses.forEach((res, i) => {
+    const tags = { tag: { type: requests[i][4].tags.type } };
     processResponse(res, tags);
   });
+  sleep(1); // 1s sleep between iterations.
 }
