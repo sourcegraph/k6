@@ -1,0 +1,13 @@
+{
+  "discardResponseBodies": true,
+  "stages": [
+    { "duration": "5s", "target": 80 },
+    { "duration": "50s", "target": 80 },
+    { "duration": "5s", "target": 0 }
+  ],
+  "rps": 80,
+  "thresholds": {
+    "checks": [{ "threshold": "rate>0.9", "abortOnFail": true }],
+    "http_req_failed": [{ "threshold": "rate<=0.5", "abortOnFail": true }]
+  }
+}
