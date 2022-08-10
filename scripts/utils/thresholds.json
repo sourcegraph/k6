@@ -1,5 +1,9 @@
 {
-  "checks": [{ "threshold": "rate>0.95", "abortOnFail": true }],
+  "checks": [{ "threshold": "rate>0.9", "abortOnFail": true }],
+  "checks{type:literal}": ["rate>0.9"],
+  "checks{type:regexp}": ["rate>0.9"],
+  "checks{type:structural}": ["rate>0.9"],
+  "checks{type:unindexed}": ["rate>0.9"],
   "time_to_first_byte{type:frontend}": ["p(95)<5500"],
   "time_to_first_byte{type:literal}": ["p(95)<5500"],
   "time_to_first_byte{type:regexp}": ["p(95)<6500"],
