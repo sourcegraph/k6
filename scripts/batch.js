@@ -5,6 +5,7 @@ import {
   thresholds,
   processResponse,
   groupGraphQLBatchRequests,
+  shuffle,
   uri,
 } from './utils/helpers.js';
 export let successRate = new Rate('successful_requests');
@@ -22,10 +23,12 @@ export function setup() {
 }
 // MAIN TEST SCRIPT
 // SEARCH REQUESTS FOR EACH VU TO EXECUTE
-export default function (requests) {
+export default function (queries) {
+  const requests = shuffle(queries);
   const responses = http.batch(requests);
   responses.forEach((res, i) => {
     const tags = { tag: { type: requests[i][4].tags.type } };
     processResponse(res, tags);
   });
+  sleep(1); // 1s sleep between iterations.
 }

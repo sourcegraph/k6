@@ -94,3 +94,14 @@ export function processResponse(response, tags) {
   TTFB.add(response.timings.waiting, tags.tag);
   check(response, { [tags.tag.type]: (res) => res.status === 200 }, tags.tag);
 }
+
+// SHUFFLE AN ARRAY OF QUERIES
+export function shuffle(queries) {
+  for (let i = queries.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    let temp = queries[i];
+    queries[i] = queries[j];
+    queries[j] = temp;
+  }
+  return queries;
+}

@@ -1,9 +1,8 @@
 {
   "discardResponseBodies": true,
   "stages": [
-    { "duration": "5s", "target": 40 },
-    { "duration": "50s", "target": 40 },
-    { "duration": "5s", "target": 0 }
+    { "duration": "20s", "target": 40 },
+    { "duration": "30s", "target": 40 }
   ],
   "rps": 40,
   "thresholds": {
