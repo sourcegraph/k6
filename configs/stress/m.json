@@ -1,10 +1,10 @@
 {
   "discardResponseBodies": true,
   "stages": [
-    { "duration": "20s", "target": 80 },
-    { "duration": "30s", "target": 80 }
+    { "duration": "30s", "target": 4000 },
+    { "duration": "30s", "target": 4000 }
   ],
-  "rps": 80,
+  "rps": 4000,
   "thresholds": {
     "checks": [{ "threshold": "rate>0.9", "abortOnFail": true }],
     "http_req_failed": [{ "threshold": "rate<=0.5", "abortOnFail": true }]

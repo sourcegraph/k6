@@ -19,7 +19,10 @@ export const TTFB = new Trend('time_to_first_byte', true);
 // FUNCTION TO CREATE A STREAM REQUEST
 export function makeStreamEndpoint(searchQuery) {
   const streamEndpoint = new URL('/.api/search/stream', uri);
-  streamEndpoint.searchParams.append('q', searchQuery.query);
+  streamEndpoint.searchParams.append(
+    'q',
+    encodeURIComponent(searchQuery.query)
+  );
   streamEndpoint.searchParams.append('v', 'V2');
   streamEndpoint.searchParams.append('t', searchQuery.type);
   streamEndpoint.searchParams.append('display', 10);

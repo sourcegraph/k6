@@ -1,0 +1,18 @@
+{
+  "discardResponseBodies": true,
+  "stages": [
+    { "duration": "2m", "target": 500 },
+    { "duration": "5m", "target": 500 },
+    { "duration": "2m", "target": 1000 },
+    { "duration": "5m", "target": 1000 },
+    { "duration": "2m", "target": 1500 },
+    { "duration": "5m", "target": 1500 },
+    { "duration": "2m", "target": 2000 },
+    { "duration": "30s", "target": 2000 },
+    { "duration": "30s", "target": 0 }
+  ],
+  "thresholds": {
+    "checks": [{ "threshold": "rate>0.9", "abortOnFail": true }],
+    "http_req_failed": [{ "threshold": "rate<=0.5", "abortOnFail": true }]
+  }
+}
