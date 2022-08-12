@@ -1,0 +1,27 @@
+{
+  "types": ["literal", "regexp", "structural", "unindexed"],
+  "literal": [
+    {
+      "query": "repo:github.com/sourcegraph/sourcegraph$ TypeScript count:10",
+      "type": "literal"
+    }
+  ],
+  "regexp": [
+    {
+      "query": "repo:github.com/sourcegraph/sourcegraph$ \bbtn-secondary\b patternType:regexp count:10",
+      "type": "regexp"
+    }
+  ],
+  "unindexed": [
+    {
+      "query": "repo:^github.com/sourcegraph/sourcegraph$ type:diff TODO select:commit.diff.removed count:10",
+      "type": "literal"
+    }
+  ],
+  "structural": [
+    {
+      "query": "repo:^github.com/sourcegraph/sourcegraph$ try { :[matched_statements] } catch { :[matched_catch] } lang:TypeScript patternType:structural count:10",
+      "type": "structural"
+    }
+  ]
+}

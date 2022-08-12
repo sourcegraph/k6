@@ -10,9 +10,5 @@
     { "duration": "2m", "target": 4000 },
     { "duration": "30s", "target": 4000 },
     { "duration": "30s", "target": 0 }
-  ],
-  "thresholds": {
-    "checks": [{ "threshold": "rate>0.9", "abortOnFail": true }],
-    "http_req_failed": [{ "threshold": "rate<=0.5", "abortOnFail": true }]
-  }
+  ]
 }

@@ -1,14 +1,25 @@
 import { Trend } from 'k6/metrics';
 import { URL } from 'https://jslib.k6.io/url/1.0.0/index.js';
 import { check } from 'k6';
+
 // IMPORT SEARCH QUERIES FROM JSON
-export const searchQueries = JSON.parse(open('../../configs/queries.json'));
-// IMPORT THRESHOLDS SETTINGS FROM JSON
-export const thresholds = JSON.parse(open('./thresholds.json'));
+// search queries for load test - load.js script
+export const searchQueries = JSON.parse(
+  open('../../configs/queries/queries.json')
+);
+// search queries for search performance test - search.js script
+export const searchTestQueries = JSON.parse(
+  open('../../configs/queries/search.json')
+);
 
 // ENDPOINT SETTINGS
-export const uri = __ENV.SG_LOADTESTS_URL;
-const accessToken = __ENV.SG_LOADTESTS_TOKEN;
+const endpointSettings = JSON.parse(open('../../configs/settings.json'));
+export const uri = endpointSettings.uri
+  ? endpointSettings.uri
+  : __ENV.SG_LOADTESTS_URL;
+const accessToken = endpointSettings.token
+  ? endpointSettings.uri
+  : __ENV.SG_LOADTESTS_TOKEN;
 export const graphqlEndpoint = new URL('/.api/graphql', uri).toString();
 const headers = { Authorization: `token ${accessToken}` };
 export const params = { headers };
@@ -96,15 +107,4 @@ export function processBatchResponses(responses, searchType) {
 export function processResponse(response, tags) {
   TTFB.add(response.timings.waiting, tags.tag);
   check(response, { [tags.tag.type]: (res) => res.status === 200 }, tags.tag);
-}
-
-// SHUFFLE AN ARRAY OF QUERIES
-export function shuffle(queries) {
-  for (let i = queries.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    let temp = queries[i];
-    queries[i] = queries[j];
-    queries[j] = temp;
-  }
-  return queries;
 }

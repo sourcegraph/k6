@@ -1,0 +1,38 @@
+{
+  "regular": [
+    {
+      "query": "repo:github.com/sourcegraph/sourcegraph$ TypeScript count:10",
+      "type": "literal"
+    },
+    {
+      "query": "repo:github.com/sourcegraph/sourcegraph$ \bbtn-secondary\b patternType:regexp count:10",
+      "type": "regexp"
+    },
+    {
+      "query": "repo:github.com/sourcegraph/sourcegraph$ type:diff after:'1 week ago' .subscribe( lang:typescript count:10",
+      "type": "unindexed"
+    },
+    {
+      "query": "repo:^github.com/sourcegraph/sourcegraph$ try { :[matched_statements] } catch { :[matched_catch] } lang:TypeScript patternType:structural count:10",
+      "type": "structural"
+    }
+  ],
+  "expensive": [
+    {
+      "query": "errorMessage count:all",
+      "type": "literal"
+    },
+    {
+      "query": "type:diff repo:github.com/sourcegraph/sourcegraph$ repo:@*refs/heads/ after:'5 days ago' \b(auth[^o][^r]|security\b|cve|password|secure|unsafe|perms|permissions) count:10 patternType:regexp",
+      "type": "regexp"
+    },
+    {
+      "query": "repo:^github.com/sourcegraph/sourcegraph$ type:diff TODO select:commit.diff.removed count:all",
+      "type": "unindexed"
+    },
+    {
+      "query": "repo:^github.com/sourcegraph/sourcegraph$ import {...} from 'rxjs' patternType:structural count:all",
+      "type": "structural"
+    }
+  ]
+}

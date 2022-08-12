@@ -13,12 +13,6 @@ A test fails when successful rate is lower than 90%:
 
 You should increase the resources for your instance accordingly if running a test designed for your instance size breaks your instance.
 
-A search type fails when 95% of the searches take longer than the time listed below to return results during non-stressed tests:
-  - literal: 5.5seconds
-  - regexp: 6.5seconds
-  - structural: 35seconds
-  - unindexed: 35seconds
-
 It is expected for search results to return slower during its peak hours, especially for search queries that are considered expensive, like structural searches and unindexed searches. We should focus on the failing request rates for those tests instead.
 
 > NOTE: These values defined in the config/thresholds.json in the tests directory
@@ -26,8 +20,8 @@ It is expected for search results to return slower during its peak hours, especi
 Types of searches:
 - literal search - example: 'repo:^github.com/sourcegraph/sourcegraph$ console lang:TypeScript'
 - regex search - example: 'repo:github.com/sourcegraph/sourcegraph$ \bbtn-secondary\b patternType:regexp'
-- unindexed search - example: 'repo:^github.com/sourcegraph/sourcegraph$ type:diff TODO select:commit.diff.removed'
 - structural search - example: 'repo:^github.com/sourcegraph/sourcegraph$ try { :[matched_statements] } catch { :[matched_catch] } patternType:structural'
+- unindexed search - example: 'repo:^github.com/sourcegraph/sourcegraph$ type:diff TODO select:commit.diff.removed'
 
 ### n-users
 
@@ -41,9 +35,35 @@ __n__ is equal to 20% of the user count that the instance supports before it ram
 | XL   |       |                    |
 | 2XL  |       |                    |
 
+### Search Performance Test
+
+The test runs the same set of queries for each search type 30 times respectively, with a max duration set as 32 minutes.
+
+From the end-of-test summary, we can see how long it takes for each type of search to be executed by looking at the time for first byte metrics for 95% of the requests P(95).
+
+A search type fails when 95% of the searches take longer than the time listed below to return results:
+
+- Regular queries:
+  - literal: 2-seconds
+  - regexp: 2-seconds
+  - structural: 5.5-seconds
+  - unindexed: 5.5-seconds
+
+- Expensive queries:
+  - literal: 5.5-seconds
+  - regexp: 6.5-seconds
+  - structural: 15-seconds
+  - unindexed: 50-seconds
+
+> Note: The same set of search queries should be use across instances for search performance test
+
+```bash
+k6 run scripts/search.js
+```
+
 ### Load Test
 
-The load test starts with 0 concurrent virtual users (VUs), and ramps up gradually to __n__ users (see n-users table above) before ramping back down to 0. Each virtual user would send one random request to one of the instance endpoints, with a random sleep time (1 - 60 seconds) in between:
+The load test starts with 0 concurrent virtual users (VUs) and ramps up gradually to __n__ users (see n-users table above) before ramping back down to 0. Each virtual user would send one random request to one of the instance endpoints, with a random sleep time (1 - 60 seconds) in-between: 
 - 40% of the VUs send a POST request to the graphQL API endpoint with a random literal search query
 - 30% of the VUs send a GET request to frontpage
 - 20% of the VUs send a POST request to the graphQL API endpoint with a random regexp search query
@@ -55,26 +75,24 @@ To start a load test, run the following command at the root of this repository:
 
 ```sh
 # example for size small:
-# k6 run -c tests/configs/load/s.json tests/load.js
-k6 run -c configs/load/<size>.json tests/load.js
+# k6 run -c scripts/options/load/s.json scripts/load.js
+k6 run -c scripts/options/load/<size>.json scripts/load.js
 ```
 
 ### Stress Test
 
 The stress test runs the same script as the load test aggressively in a short time period. 
 
-The test tries to overwhelms the system with an extreme surge of load by ramping up from 0 to __n__ users (see n-users table above) in 30 seconds, where each user sends a random request to the instance concurrently, with a random start time and sleep time in between for another 30 seconds.
+The test tries to overwhelm the system with an extreme surge of load by ramping up from 0 to __n__ users in 20 seconds, where each user sends a random request to the instance concurrently, with a random start time and sleep time in between for another 30 seconds, before ramping back down to 0 in 10 seconds. 
 
-The response time of a stress test is expected to be slower than usual, as we should rather focus on the request failure rate in this test instead. 
-
-A stress test fails if the failure rate is higher than 10% of the total requests made.
+> Note: The response time of a stress test is expected to be slower than usual, as we should rather focus on the request failing rate instead. Therefore, we should look at the request failure ratio (http_req_failed) in the end-of-test summary. The successful-calls (check) ratio for a well-performing instance should be above 90%.
 
 To start a stress test, run the following command at the root of this repository:
 
 ```sh
 # example for size small: 
-# k6 run -c configs/stress/s.json scripts/stress.js
-k6 run -c configs/stress/<size>.json scripts/stress.js
+# k6 run -c scripts/options/load/s.json scripts/load.js
+k6 run -c scripts/options/load/<size>.json scripts/stress.js
 ```
 
 ## Instructions
@@ -115,31 +133,43 @@ export SG_LOADTESTS_TOKEN=1234567890
 export SG_LOADTESTS_URL=https://your.sourcegraph.com
 ```
 
+You can also add your `instance URL` and `access token` to the [setting.json file](./configs/settings.json) alternatively.
+
 #### Step 4: Import the scripts and test queries
 
 1. Clone this repository
-2. Import the [queries.json file](https://github.com/sourcegraph/reference-architecture-test/blob/main/loadtests/queries.json) and move it to the [./configs directory](./configs/) --the file is only accessible by internal users. THIS IS A TEMPORARY STEP AND WILL BE REMOVED IN THE FUTURE.
+2. [THIS IS A TEMPORARY STEP AND WILL BE REMOVED IN THE FUTURE] Replace the [./configs/queries/queries.json file](./configs/queries/queries.json) with the [queries.json file from the internal repoistory](https://github.com/sourcegraph/reference-architecture-test/blob/main/loadtests/queries.json)--the file is only accessible by internal users.
+
+TODO: Generate queries using information in the [setting.json file](./configs/settings.json)
 
 #### Step 5: Pick a test to run
 
 ##### Load Test
 
-To start a load test, run the following command at the root of this repository:
+Run the following command at the root of this repository:
 
 ```sh
 # example for size small:
-# k6 run -c configs/load/s.json scripts/load.js
-k6 run -c configs/load/<size>.json scripts/load.js
+# k6 run -c scripts/options/load/s.json scripts/load.js
+k6 run -c scripts/options/load/<size>.json scripts/load.js
 ```
 
 ##### Stress Test
 
-To start a stress test, run the following command at the root of this repository:
+Run the following command at the root of this repository:
 
 ```sh
 # example for size medium instance: 
-# k6 run -c configs/stress/m.json scripts/stress.js
-k6 run -c configs/stress/<size>.json scripts/stress.js
+# k6 run -c scripts/options/load/m.json scripts/load.js
+k6 run -c scripts/options/stress/<size>.json scripts/load.js
+```
+
+##### Search Performance Test
+
+Run the following command at the root of this repository:
+
+```sh
+k6 run scripts/search.js
 ```
 
 ## Troubleshooting
@@ -168,3 +198,5 @@ This error indicates that your testing machine does not have enough TCP sockets 
 # Adjust the suggested number 250000 if needed
 ulimit -n 250000
 ```
+
+Please refer to [k6 docs on fine tuning OS](https://k6.io/docs/misc/fine-tuning-os/) for more info.

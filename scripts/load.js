@@ -11,7 +11,6 @@ import {
   searchQueries,
   uri,
   params,
-  thresholds,
   graphqlEndpoint,
 } from './utils/helpers.js';
 /* 
@@ -19,6 +18,7 @@ The test starts with 0 vitual users and ramp up from 0 to max concurrent user co
 each user would perform a random request according to the assigned distribution for each search type
 */
 // TEST SCRIPT CONFIGS
+const thresholds = JSON.parse(open('options/thresholds/load.json'));
 export const options = { thresholds };
 // TEST SCRIPT IN-IT FUNCTION
 export function setup() {
