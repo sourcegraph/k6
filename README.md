@@ -1,6 +1,6 @@
 # K6 for Sourcegraph
 
-For interal users: Please download the [queries.json file](https://github.com/sourcegraph/reference-architecture-test/blob/main/loadtests/queries.json) and move it to the [./configs directory](./configs/).
+For interal users: Please replace the [./configs/queries/queries.json file](./configs/) with [this queries.json file](https://github.com/sourcegraph/reference-architecture-test/blob/main/loadtests/queries.json).
 
 This repository contains scripts for k6, an open-source tool for load testing, to run in order to performance tests on a Sourcegraph instance.
 
