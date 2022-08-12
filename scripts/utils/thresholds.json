@@ -8,6 +8,5 @@
   "time_to_first_byte{type:literal}": ["p(95)<5500"],
   "time_to_first_byte{type:regexp}": ["p(95)<6500"],
   "time_to_first_byte{type:structural}": ["p(95)<35000"],
-  "time_to_first_byte{type:unindexed}": ["p(95)<35000"],
-  "maxRedirects": 0
+  "time_to_first_byte{type:unindexed}": ["p(95)<35000"]
 }
