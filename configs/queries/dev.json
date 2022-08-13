@@ -1,0 +1,229 @@
+{
+  "types": ["literal", "regexp", "structural", "unindexed"],
+  "literal": [
+    {
+      "query": "repo:^github.com/microsoft/vscode$ webviewPanel",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/microsoft vscode count:10 type:repo",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/microsoft windows count:10 type:repo ",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/microsoft windows xp count:10",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/microsoft/TypeScript$ Vista count:10",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/microsoft/TypeScript$ new URLSearchParams count:10",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/microsoft/azure-docs$ All except ability to add new members to roles count:10",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/microsoft/react-native-windows$ *.xcodepro",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/microsoft/terminal$ Width; count:10",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/microsoft/TypeScript$ file:^scripts errorRegexp",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/microsoft/TypeScript$ clearFormatting() count:10",
+      "type": "literal"
+    },
+    {
+      "query": "TypeScript count:10 type:repo",
+      "type": "literal"
+    },
+    {
+      "query": "TypeScript type:file count:10",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/microsoft/calculator$ file:^src/CalcViewModel/Common/LocalizationSettings.h identifier",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/microsoft/ bootstrap count:10 type:repo",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/microsoft/TypeScript$ file:^tests/cases/fourslash/fourslash.ts EditorSettings case:yes",
+      "type": "literal"
+    },
+    {
+      "query": "bootstrap count:10",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/microsoft/react-native-windows$ React.Component<BootstrapProps> count:all",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/sourcegraph/sourcegraph$ console lang:TypeScript count:10",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/google/crosvm$ video count:10",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/google/crosvm$ cros count:10",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/google/crosvm$ device_constants count:10",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/google/crosvm$ copy_config count:10",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/google/crosvm$ event_source count:10",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/google/crosvm$ Fills a virtqueue with events from the source count:10",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/google/crosvm$ import count:10 case:yes",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/google/crosvm$ dwl_dmabuf count:10",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/google/crosvm$ videos count:10",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/sourcegraph/sourcegraph$ console lang:TypeScript count:10",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/sourcegraph/sourcegraph$ vsce lang:TypeScript count:10",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/sourcegraph/sourcegraph$ endpoints lang:Go count:10",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/sourcegraph/sourcegraph$ vscode count:10",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/sourcegraph/sourcegraph$ Result limit hit count:10",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/sourcegraph/sourcegraph$ pgsql count:10",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/sourcegraph/sourcegraph$ GitServers is the addresses of gitserver instances count:10",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/sourcegraph/sourcegraph$ newWithConfig count:10",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/sourcegraph/sourcegraph$ browser count:10",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/sourcegraph/sourcegraph$ NewCounterVec lang:Go count:10",
+      "type": "literal"
+    },
+    {
+      "query": "errorMessage count:10",
+      "type": "literal"
+    },
+    {
+      "query": "errorMessage count:all",
+      "type": "literal"
+    }
+  ],
+  "regexp": [
+    {
+      "query": "repo:^github.com/sourcegraph/deploy-sourcegraph-docker$ docker-compose yaml patternType:regexp",
+      "type": "regexp"
+    },
+    {
+      "query": "repo:^github.com/microsoft/TypeScript$ file:^scripts exec(**) count:10 patternType:regexp",
+      "type": "regexp"
+    },
+    {
+      "query": "repo:github.com/sourcegraph/sourcegraph$ \bbtn-secondary\b patternType:regexp count:10",
+      "type": "regexp"
+    },
+    {
+      "query": "repo:^github.com/microsoft/vscode$ getWebviewOptions.+vscode patternType:regexp count:10",
+      "type": "regexp"
+    },
+    {
+      "query": "repo:^github.com/microsoft/vscode$ WebviewPanelContribution*extends count:10",
+      "type": "regexp"
+    },
+    {
+      "query": "type:diff repo:github.com/sourcegraph/sourcegraph$ repo:@*refs/heads/ after:'5 days ago' \b(auth[^o][^r]|security\b|cve|password|secure|unsafe|perms|permissions) count:10 patternType:regexp",
+      "type": "regexp"
+    }
+  ],
+  "unindexed": [
+    {
+      "query": "repo:^github.com/torvalds/linux$ type:diff TODO select:commit.diff.removed count:10",
+      "type": "literal"
+    },
+    {
+      "query": "type:commit test repo:^github.com/sourcegraph/deploy-sourcegraph-docker$ count:10",
+      "type": "literal"
+    },
+    {
+      "query": "repo:github.com/sourcegraph/sourcegraph$ type:diff after:'1 week ago' .subscribe( lang:typescript count:10 patternType:literal",
+      "type": "literal"
+    }
+  ],
+  "structural": [
+    {
+      "query": "fprintf(stderr, ..., err) lang:c repo:^github.com/torvalds/linux$ patternType:structural count:10",
+      "type": "structural"
+    },
+    {
+      "query": "repo:^github.com/sourcegraph/sourcegraph$ try { :[matched_statements] } catch { :[matched_catch] } lang:TypeScript patternType:structural count:10",
+      "type": "structural"
+    },
+    {
+      "query": "repo:^github.com/sourcegraph/sourcegraph$ import {...} from 'rxjs' count:10 patternType:structural",
+      "type": "structural"
+    }
+  ],
+  "symbol": [
+    {
+      "query": "repo:^github.com/microsoft/monaco-editor$ type:symbol path count:10",
+      "type": "literal"
+    },
+    {
+      "query": "repo:^github.com/google/crosvm$ file type:symbol count:10",
+      "type": "literal"
+    }
+  ]
+}

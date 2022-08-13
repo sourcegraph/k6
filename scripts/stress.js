@@ -30,7 +30,6 @@ export function setup() {
 // TEST SCRIPT
 export default function () {
   if (__VU % 10 == 1) {
-    console.log(instanceSize);
     // 10% of the VUs perform a random search request chosen from any search types
     group('stream', function () {
       sleep(randomIntBetween(1, 60));

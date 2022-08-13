@@ -55,6 +55,8 @@ A search type fails when 95% of the searches take longer than the time listed be
   - structural: 15-seconds
   - unindexed: 50-seconds
 
+^Based on results from cloud with 10% buffer
+
 > Note: The same set of search queries should be use across instances for search performance test
 
 ```bash
@@ -122,7 +124,11 @@ Make sure your instance has the repositories listed in the GitHub config below c
 }
 ```
 
-#### Step 3: Export the variables
+#### Step 3: Import the scripts
+
+Clone this repository onto your local machine --this should not be inside the machine that is hosting your Sourcegraph instance.
+
+#### Step 4: Export the variables
 
 The tests start with looking for the `instance URL` and `access token` generated from your instance as exported environment variables.
 
@@ -135,14 +141,9 @@ export SG_LOADTESTS_URL=https://your.sourcegraph.com
 
 You can also add your `instance URL` and `access token` to the [setting.json file](./configs/settings.json) alternatively.
 
-#### Step 4: Import the scripts and test queries
-
-1. Clone this repository
-2. [THIS IS A TEMPORARY STEP AND WILL BE REMOVED IN THE FUTURE] Replace the [./configs/queries/queries.json file](./configs/queries/queries.json) with the [queries.json file from the internal repoistory](https://github.com/sourcegraph/reference-architecture-test/blob/main/configs/queries.json)--the file is only accessible by internal users.
-
-TODO: Generate queries using information in the [setting.json file](./configs/settings.json)
-
 #### Step 5: Pick a test to run
+
+Before you run a test, you might first need to increase the user limit on your machine: `ulimit -n 250000`
 
 ##### Load Test
 

@@ -4,9 +4,7 @@ import { check } from 'k6';
 
 // IMPORT SEARCH QUERIES FROM JSON
 // search queries for load test - load.js script
-export const searchQueries = JSON.parse(
-  open('../../configs/queries/queries.json')
-);
+export const searchQueries = JSON.parse(open('../../configs/queries/dev.json'));
 // search queries for search performance test - search.js script
 export const searchTestQueries = JSON.parse(
   open('../../configs/queries/search.json')
