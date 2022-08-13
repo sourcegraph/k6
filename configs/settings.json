@@ -1,6 +1,7 @@
 {
     "uri": "",
     "token": "",
+    "size": "s",
     "mono_repos": ["", ""],
     "main_repos": ["", ""]
 }

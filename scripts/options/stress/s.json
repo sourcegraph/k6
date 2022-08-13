@@ -1,8 +1,0 @@
-{
-  "discardResponseBodies": true,
-  "stages": [
-    { "duration": "30s", "target": 2000 },
-    { "duration": "30s", "target": 2000 }
-  ],
-  "rps": 2000
-}

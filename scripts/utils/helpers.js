@@ -11,15 +11,23 @@ export const searchQueries = JSON.parse(
 export const searchTestQueries = JSON.parse(
   open('../../configs/queries/search.json')
 );
+// thresholds for tests
+export const testThresholds = JSON.parse(open('../options/thresholds.json'));
 
 // ENDPOINT SETTINGS
 const endpointSettings = JSON.parse(open('../../configs/settings.json'));
+//uri
 export const uri = endpointSettings.uri
   ? endpointSettings.uri
   : __ENV.SG_LOADTESTS_URL;
+// token
 const accessToken = endpointSettings.token
   ? endpointSettings.uri
   : __ENV.SG_LOADTESTS_TOKEN;
+// instance size
+export const instanceSize = __ENV.SG_SIZE
+  ? __ENV.SG_SIZE
+  : endpointSettings.size;
 export const graphqlEndpoint = new URL('/.api/graphql', uri).toString();
 const headers = { Authorization: `token ${accessToken}` };
 export const params = { headers };

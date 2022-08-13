@@ -1,6 +1,6 @@
 # K6 for Sourcegraph
 
-For interal users: Please replace the [./configs/queries/queries.json file](./configs/) with [this queries.json file](https://github.com/sourcegraph/reference-architecture-test/blob/main/loadtests/queries.json).
+For interal users: Please replace the [./configs/queries/queries.json file](./configs/) with [this queries.json file](https://github.com/sourcegraph/reference-architecture-test/blob/main/configs/queries.json).
 
 This repository contains scripts for k6, an open-source tool for load testing, to run in order to performance tests on a Sourcegraph instance.
 
@@ -75,15 +75,15 @@ To start a load test, run the following command at the root of this repository:
 
 ```sh
 # example for size small:
-# k6 run -c scripts/options/load/s.json scripts/load.js
-k6 run -c scripts/options/load/<size>.json scripts/load.js
+# k6 run -e SG_SIZE=s scripts/stress.js
+k6 run -e SG_SIZE=<size> scripts/load.js
 ```
 
 ### Stress Test
 
 The stress test runs the same script as the load test aggressively in a short time period. 
 
-The test tries to overwhelm the system with an extreme surge of load by ramping up from 0 to __n__ users in 20 seconds, where each user sends a random request to the instance concurrently, with a random start time and sleep time in between for another 30 seconds, before ramping back down to 0 in 10 seconds. 
+The test tries to overwhelm the system with an extreme surge of load by ramping up from 0 to __n__ users in 20 seconds, where each user sends a random request to the instance concurrently, with a shorter random start time and sleep time in between for another 30 seconds. 
 
 > Note: The response time of a stress test is expected to be slower than usual, as we should rather focus on the request failing rate instead. Therefore, we should look at the request failure ratio (http_req_failed) in the end-of-test summary. The successful-calls (check) ratio for a well-performing instance should be above 90%.
 
@@ -91,8 +91,8 @@ To start a stress test, run the following command at the root of this repository
 
 ```sh
 # example for size small: 
-# k6 run -c scripts/options/load/s.json scripts/load.js
-k6 run -c scripts/options/load/<size>.json scripts/stress.js
+# k6 run -e SG_SIZE=s scripts/stress.js
+k6 run -e SG_SIZE=<size> scripts/stress.js
 ```
 
 ## Instructions
@@ -138,7 +138,7 @@ You can also add your `instance URL` and `access token` to the [setting.json fil
 #### Step 4: Import the scripts and test queries
 
 1. Clone this repository
-2. [THIS IS A TEMPORARY STEP AND WILL BE REMOVED IN THE FUTURE] Replace the [./configs/queries/queries.json file](./configs/queries/queries.json) with the [queries.json file from the internal repoistory](https://github.com/sourcegraph/reference-architecture-test/blob/main/loadtests/queries.json)--the file is only accessible by internal users.
+2. [THIS IS A TEMPORARY STEP AND WILL BE REMOVED IN THE FUTURE] Replace the [./configs/queries/queries.json file](./configs/queries/queries.json) with the [queries.json file from the internal repoistory](https://github.com/sourcegraph/reference-architecture-test/blob/main/configs/queries.json)--the file is only accessible by internal users.
 
 TODO: Generate queries using information in the [setting.json file](./configs/settings.json)
 
@@ -150,8 +150,8 @@ Run the following command at the root of this repository:
 
 ```sh
 # example for size small:
-# k6 run -c scripts/options/load/s.json scripts/load.js
-k6 run -c scripts/options/load/<size>.json scripts/load.js
+# k6 run -e SG_SIZE=s scripts/load.js
+k6 run -e SG_SIZE=<size> scripts/load.js
 ```
 
 ##### Stress Test
@@ -160,8 +160,8 @@ Run the following command at the root of this repository:
 
 ```sh
 # example for size medium instance: 
-# k6 run -c scripts/options/load/m.json scripts/load.js
-k6 run -c scripts/options/stress/<size>.json scripts/load.js
+# k6 run -e SG_SIZE=m scripts/stress.js
+k6 run -e SG_SIZE=<size> scripts/stress.js
 ```
 
 ##### Search Performance Test

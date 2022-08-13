@@ -4,6 +4,7 @@ import {
   makeGraphQLQuery,
   processResponse,
   searchTestQueries,
+  testThresholds,
   uri,
   params,
   graphqlEndpoint,
@@ -12,23 +13,18 @@ import {
 The test starts with 0 vitual users and ramp up from 0 to max concurrent user count gradually
 each user would perform a random request according to the assigned distribution for each search type
 */
+
 // TEST SCRIPT CONFIGS
-const thresholds = JSON.parse(open('options/thresholds/search.json'));
-export const options = {
-  scenarios: {
-    search_performance_test: {
-      executor: 'shared-iterations',
-      vus: 1,
-      iterations: 30,
-      maxDuration: '32m',
-    },
-  },
-  thresholds,
-};
+const thresholds = testThresholds.search;
+const testConfig = JSON.parse(open('options/search.json'));
+testConfig.thresholds = thresholds;
+export const options = testConfig;
+
 // TEST SCRIPT IN-IT FUNCTION
 export function setup() {
   console.log('Search Performance Test - Instance: ' + uri);
 }
+
 // TEST SCRIPT
 export default function () {
   // REGULAR QUERIES

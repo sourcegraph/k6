@@ -1,0 +1,26 @@
+{
+  "s": {
+    "discardResponseBodies": true,
+    "stages": [
+      { "duration": "30s", "target": 2000 },
+      { "duration": "30s", "target": 2000 }
+    ],
+    "rps": 2000
+  },
+  "m": {
+    "discardResponseBodies": true,
+    "stages": [
+      { "duration": "30s", "target": 4000 },
+      { "duration": "30s", "target": 4000 }
+    ],
+    "rps": 4000
+  },
+  "l": {
+    "discardResponseBodies": true,
+    "stages": [
+      { "duration": "30s", "target": 12000 },
+      { "duration": "30s", "target": 12000 }
+    ],
+    "rps": 12000
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "search": {
+    "checks": [{ "threshold": "rate>0.99", "abortOnFail": true }],
+    "http_req_failed": [{ "threshold": "rate<=0.1", "abortOnFail": true }],
+    "checks{literal:regular}": ["rate>0.99"],
+    "checks{regexp:regular}": ["rate>0.99"],
+    "checks{structural:regular}": ["rate>0.99"],
+    "checks{unindexed:regular}": ["rate>0.99"],
+    "checks{literal:expensive}": ["rate>0.99"],
+    "checks{regexp:expensive}": ["rate>0.99"],
+    "checks{structural:expensive}": ["rate>0.99"],
+    "checks{unindexed:expensive}": ["rate>0.99"],
+    "time_to_first_byte{literal:regular}": ["p(95)<2000"],
+    "time_to_first_byte{regexp:regular}": ["p(95)<2000"],
+    "time_to_first_byte{structural:regular}": ["p(95)<3500"],
+    "time_to_first_byte{unindexed:regular}": ["p(95)<2500"],
+    "time_to_first_byte{literal:expensive}": ["p(95)<5500"],
+    "time_to_first_byte{regexp:expensive}": ["p(95)<6500"],
+    "time_to_first_byte{structural:expensive}": ["p(95)<15000"],
+    "time_to_first_byte{unindexed:expensive}": ["p(95)<50000"]
+  },
+  "load": {
+    "checks": [{ "threshold": "rate>0.9", "abortOnFail": true }],
+    "http_req_failed": [{ "threshold": "rate<=0.5", "abortOnFail": true }],
+    "checks{type:literal}": ["rate>0.9"],
+    "checks{type:regexp}": ["rate>0.9"],
+    "checks{type:structural}": ["rate>0.9"],
+    "checks{type:unindexed}": ["rate>0.9"],
+    "checks{type:frontpage}": ["rate>0.9"],
+    "time_to_first_byte{type:frontpage}": ["med<2000"],
+    "time_to_first_byte{type:literal}": ["med<5500"],
+    "time_to_first_byte{type:regexp}": ["med<35000"],
+    "time_to_first_byte{type:structural}": ["med<35000"],
+    "time_to_first_byte{type:unindexed}": ["med<35000"]
+  }
+}
