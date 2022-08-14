@@ -65,11 +65,13 @@ k6 run scripts/search.js
 
 ### Load Test
 
-The load test starts with 0 concurrent virtual users (VUs) and ramps up gradually to __n__ users (see n-users table above) before ramping back down to 0. Each virtual user would send one random request to one of the instance endpoints, with a random sleep time (1 - 60 seconds) in-between requests: 
-- 40% of the VUs send a POST request to the graphQL API endpoint with a random literal search query
-- 30% of the VUs send a GET request to frontpage
-- 20% of the VUs send a POST request to the graphQL API endpoint with a random regexp search query
-- 10% of the VUs send a GET request to the stream search API endpoint with a random search query
+The load test ramps up from 0 to __n__ concurrent users (see n-users table above) over 2 minutes, and stays at __n__ concurrent users for 6 minutes, before ramping back down to 0 in 2 minutes. Each virtual user would send a a random request to one of the instance endpoints at a random time over the test duration with the following distribution: 
+- 40% of the VUs -GET request to frontpage
+- 30% of the VUs -POST request to the graphQL API endpoint with a random literal search query
+- 20% of the VUs -POST request to the graphQL API endpoint with a random regexp search query
+- 10% of the VUs -GET request to the stream search API endpoint with a random search query
+
+This distrubtion is based on our data, where about 70% of all the searches performed are literal search, and 1-2% are structural and unindexed searches. 
 
 The result shows us how the instance performs under both normal and peak load.
 
