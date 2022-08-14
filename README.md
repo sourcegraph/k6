@@ -37,6 +37,8 @@ __n__ is equal to 20% of the user count that the instance supports before it ram
 
 ### Search Performance Test
 
+Test duration: ~32m
+
 The test runs the same set of queries for each search type 30 times respectively, with a max duration set as 32 minutes.
 
 From the end-of-test summary, we can see how long it takes for each type of search to be executed by looking at the time for first byte metrics for 95% of the requests P(95).
@@ -65,6 +67,8 @@ k6 run scripts/search.js
 
 ### Load Test
 
+Test duration: ~10m
+
 The load test ramps up from 0 to __n__ concurrent users (see n-users table above) over 2 minutes, and stays at __n__ concurrent users for 6 minutes, before ramping back down to 0 in 2 minutes. Each virtual user would send a a random request to one of the instance endpoints at a random time over the test duration with the following distribution: 
 - 40% of the VUs -GET request to frontpage
 - 30% of the VUs -POST request to the graphQL API endpoint with a random literal search query
@@ -84,6 +88,8 @@ k6 run -e SG_SIZE=<size> scripts/load.js
 ```
 
 ### Stress Test
+
+Test duration: ~1m
 
 The stress test runs the same script as the load test aggressively in a short time period. 
 
