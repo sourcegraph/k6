@@ -65,7 +65,7 @@ k6 run scripts/search.js
 
 ### Load Test
 
-The load test starts with 0 concurrent virtual users (VUs) and ramps up gradually to __n__ users (see n-users table above) before ramping back down to 0. Each virtual user would send one random request to one of the instance endpoints, with a random sleep time (1 - 60 seconds) in-between: 
+The load test starts with 0 concurrent virtual users (VUs) and ramps up gradually to __n__ users (see n-users table above) before ramping back down to 0. Each virtual user would send one random request to one of the instance endpoints, with a random sleep time (1 - 60 seconds) in-between requests: 
 - 40% of the VUs send a POST request to the graphQL API endpoint with a random literal search query
 - 30% of the VUs send a GET request to frontpage
 - 20% of the VUs send a POST request to the graphQL API endpoint with a random regexp search query
@@ -85,9 +85,9 @@ k6 run -e SG_SIZE=<size> scripts/load.js
 
 The stress test runs the same script as the load test aggressively in a short time period. 
 
-The test tries to overwhelm the system with an extreme surge of load by ramping up from 0 to __n__ users in 20 seconds, where each user sends a random request to the instance concurrently, with a shorter random start time and sleep time in between for another 30 seconds. 
+The test tries to overwhelm the system with an extreme surge of load by having __n__ concurrent users sending random requests at random times to the instance for 60 seconds.
 
-> Note: The response time of a stress test is expected to be slower than usual, as we should rather focus on the request failing rate instead. Therefore, we should look at the request failure ratio (http_req_failed) in the end-of-test summary. The successful-calls (check) ratio for a well-performing instance should be above 90%.
+> Note: The response times in a stress test is expected to be slower than usual, as we should rather focus on the request failing rate instead. Therefore, we should look at the request failure ratio (http_req_failed) in the end-of-test summary. The successful-calls (check) ratio for a well-performing instance should be above 90%.
 
 To start a stress test, run the following command at the root of this repository:
 
