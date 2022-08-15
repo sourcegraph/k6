@@ -1,26 +1,35 @@
 {
   "s": {
     "discardResponseBodies": true,
-    "stages": [
-      { "duration": "30s", "target": 2000 },
-      { "duration": "30s", "target": 2000 }
-    ],
-    "rps": 2000
+    "scenarios": {
+      "stress": {
+        "executor": "constant-vus",
+        "vus": 2000,
+        "duration": "60s",
+        "gracefulStop": "3s"
+      }
+    }
   },
   "m": {
     "discardResponseBodies": true,
-    "stages": [
-      { "duration": "30s", "target": 4000 },
-      { "duration": "30s", "target": 4000 }
-    ],
-    "rps": 4000
+    "scenarios": {
+      "stress": {
+        "executor": "constant-vus",
+        "vus": 4000,
+        "duration": "60s",
+        "gracefulStop": "3s"
+      }
+    }
   },
   "l": {
     "discardResponseBodies": true,
-    "stages": [
-      { "duration": "30s", "target": 12000 },
-      { "duration": "30s", "target": 12000 }
-    ],
-    "rps": 12000
+    "scenarios": {
+      "stress": {
+        "executor": "constant-vus",
+        "vus": 12000,
+        "duration": "60s",
+        "gracefulStop": "3s"
+      }
+    }
   }
 }

@@ -35,6 +35,8 @@ __n__ is equal to 20% of the user count that the instance supports before it ram
 
 ### Search Performance Test
 
+Test duration: ~32m
+
 The test runs the same set of queries for each search type 30 times respectively, with a max duration set as 32 minutes.
 
 From the end-of-test summary, we can see how long it takes for each type of search to be executed by looking at the time for first byte metrics for 95% of the requests P(95).
@@ -63,11 +65,15 @@ k6 run scripts/search.js
 
 ### Load Test
 
-The load test starts with 0 concurrent virtual users (VUs) and ramps up gradually to __n__ users (see n-users table above) before ramping back down to 0. Each virtual user would send one random request to one of the instance endpoints, with a random sleep time (1 - 60 seconds) in-between: 
-- 40% of the VUs send a POST request to the graphQL API endpoint with a random literal search query
-- 30% of the VUs send a GET request to frontpage
-- 20% of the VUs send a POST request to the graphQL API endpoint with a random regexp search query
-- 10% of the VUs send a GET request to the stream search API endpoint with a random search query
+Test duration: ~10m
+
+The load test ramps up from 0 to __n__ concurrent users (see n-users table above) over 2 minutes, and stays at __n__ concurrent users for 6 minutes, before ramping back down to 0 in 2 minutes. Each virtual user would send a a random request to one of the instance endpoints at a random time over the test duration with the following distribution: 
+- 40% of the VUs -GET request to frontpage
+- 30% of the VUs -POST request to the graphQL API endpoint with a random literal search query
+- 20% of the VUs -POST request to the graphQL API endpoint with a random regexp search query
+- 10% of the VUs -GET request to the stream search API endpoint with a random search query
+
+This distrubtion is based on our data, where about 70% of all the searches performed are literal search, and 1-2% are structural and unindexed searches. 
 
 The result shows us how the instance performs under both normal and peak load.
 
@@ -81,11 +87,13 @@ k6 run -e SG_SIZE=<size> scripts/load.js
 
 ### Stress Test
 
+Test duration: ~1m
+
 The stress test runs the same script as the load test aggressively in a short time period. 
 
-The test tries to overwhelm the system with an extreme surge of load by ramping up from 0 to __n__ users in 20 seconds, where each user sends a random request to the instance concurrently, with a shorter random start time and sleep time in between for another 30 seconds. 
+The test tries to overwhelm the system with an extreme surge of load by having __n__ concurrent users sending random requests at random times to the instance for 60 seconds.
 
-> Note: The response time of a stress test is expected to be slower than usual, as we should rather focus on the request failing rate instead. Therefore, we should look at the request failure ratio (http_req_failed) in the end-of-test summary. The successful-calls (check) ratio for a well-performing instance should be above 90%.
+> Note: The response times in a stress test is expected to be slower than usual, as we should rather focus on the request failing rate instead. Therefore, we should look at the request failure ratio (http_req_failed) in the end-of-test summary. The successful-calls (check) ratio for a well-performing instance should be above 90%.
 
 To start a stress test, run the following command at the root of this repository:
 
