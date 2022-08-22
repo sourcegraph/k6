@@ -88,7 +88,7 @@ k6 run -e SG_SIZE=<size> scripts/load.js
 ### Stress Test
 
 Test duration: ~1m
-
+k
 The stress test runs the same script as the load test aggressively in a short time period. 
 
 The test tries to overwhelm the system with an extreme surge of load by having __n__ concurrent users sending random requests at random times to the instance for 60 seconds.
@@ -178,6 +178,10 @@ Run the following command at the root of this repository:
 ```sh
 k6 run scripts/search.js
 ```
+
+## Known Limitations
+
+- Scaling suggestions for indexserver likely don’t include ctags requirements which can be hefty for files with lots of symbols
 
 ## Troubleshooting
 
