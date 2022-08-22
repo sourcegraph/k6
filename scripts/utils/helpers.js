@@ -14,6 +14,7 @@ export const searchTestQueries = JSON.parse(
 export const testThresholds = JSON.parse(open('../options/thresholds.json'));
 
 // ENDPOINT SETTINGS
+export const endpoints = ['graphql', 'stream'];
 const endpointSettings = JSON.parse(open('../../configs/settings.json'));
 //uri
 export const uri = endpointSettings.uri

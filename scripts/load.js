@@ -5,6 +5,7 @@ import {
   randomItem,
 } from 'https://jslib.k6.io/k6-utils/1.2.0/index.js';
 import {
+  endpoints,
   graphqlEndpoint,
   instanceSize,
   makeGraphQLQuery,
@@ -37,27 +38,23 @@ export default function () {
   if (__VU % 10 == 1) {
     /*  
     10% of the VUs sends a random search request chosen
-    from any search types to the graphQL API endpoint.
+    from any search types to a random API endpoint.
     It has the longest sleep time as most searches happen via
     stream search, and structural and unindexed searches are 
     the least commonly performed search types 
     */
-    group('graphQL', function () {
-      sleep(randomIntBetween(1, 240));
+    const endpoint = randomItem(endpoints);
+    group(endpoint, function () {
       const searchType = randomItem(searchTypes);
-      createSearchRequest(searchType, 'graphql');
-      sleep(randomIntBetween(1, 240));
+      createSearchRequest(searchType, endpoint);
     });
   } else if (__VU % 10 == 2) {
     /* 
     20% of the VUs sends regexp search requests to the stream
     search API.
     */
-    group('Stream - Regexp', function () {
-      sleep(randomIntBetween(1, 120));
-      const searchType = 'regexp';
-      createSearchRequest(searchType, 'stream');
-      sleep(randomIntBetween(1, 120));
+    group('stream', function () {
+      createSearchRequest('regexp', 'stream');
     });
   } else if (__VU % 10 == 3) {
     /* 
@@ -65,11 +62,8 @@ export default function () {
     search API. It also has a shorter start time compare to other 
     search types as it is the most commonly performed searches 
     */
-    group('Stream - Literal', function () {
-      sleep(randomIntBetween(1, 60));
-      const searchType = 'literal';
-      createSearchRequest(searchType, 'stream');
-      sleep(randomIntBetween(1, 240));
+    group('stream', function () {
+      createSearchRequest('literal', 'stream');
     });
   } else {
     /* 
@@ -79,18 +73,17 @@ export default function () {
     browsing results and pages than performing searches 
     */
     group('frontpage', function () {
-      sleep(randomIntBetween(1, 30));
-      const searchType = 'frontpage';
-      createSearchRequest(searchType);
-      sleep(randomIntBetween(1, 30));
+      createSearchRequest('frontpage', null);
     });
   }
+
   /* HELPER FUNCTION */
   // Create a search request for specificed search type and endpoint
   function createSearchRequest(type, endpoint) {
+    sleep(randomIntBetween(0, 120));
     const tags = { tag: { type: type } };
-    const searchQuery =
-      type == 'frontpage' ? null : randomItem(searchQueries[type]);
+    // frontpage calls have no endpoint and does not require search query
+    const searchQuery = endpoint ? randomItem(searchQueries[type]) : null;
     let res = null;
     switch (endpoint) {
       case (endpoint = 'graphql'):
@@ -101,8 +94,8 @@ export default function () {
         const streamEndpoint = makeStreamEndpoint(searchQuery);
         res = http.get(streamEndpoint, params, tags);
         break;
-      // set default for url
       default:
+        // set default for http calls to frontpage
         res = http.get(uri, searchQuery, tags);
     }
     res ? processResponse(res, tags) : null;
