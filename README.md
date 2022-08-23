@@ -104,6 +104,9 @@ k6 run -e SG_SIZE=<size> scripts/stress.js
 ```
 
 ## Instructions
+### Empty Instance
+
+This is the suggested steps for a brand new instance with no cloned repositories.
 
 #### Step 1: Install k6
 
@@ -134,18 +137,94 @@ Make sure your instance has the repositories listed in the GitHub config below c
 
 Clone this repository onto your local machine --this should not be inside the machine that is hosting your Sourcegraph instance.
 
-#### Step 4: Export the variables
+#### Step 4: Configurations
 
-The tests start with looking for the `instance URL` and `access token` generated from your instance as exported environment variables.
+The tests start with looking for the `instance URL` and `access token` generated from your instance.
 
-Replace the instance URL and access token placeholders accordingly and export them using the following command:
+Add your `instance URL` and `access token` information to the [.setting.json file](.settings.json). 
+
+Alternatively, you can replace the instance URL and access token placeholders below accordingly and export them as environment variables using the following command:
 
 ```sh
 export SG_LOADTESTS_TOKEN=1234567890
 export SG_LOADTESTS_URL=https://your.sourcegraph.com
 ```
 
-You can also add your `instance URL` and `access token` to the [setting.json file](./configs/settings.json) alternatively.
+#### Step 5: Pick a test to run
+
+Before you run a test, you might first need to increase the user limit on your machine: `ulimit -n 250000`
+
+##### Load Test
+
+Run the following command at the root of this repository:
+
+```sh
+# example for size small:
+# k6 run -e SG_SIZE=s scripts/load.js
+k6 run -e SG_SIZE=<size> scripts/load.js
+```
+
+##### Stress Test
+
+Run the following command at the root of this repository:
+
+```sh
+# example for size medium instance: 
+# k6 run -e SG_SIZE=m scripts/stress.js
+k6 run -e SG_SIZE=<size> scripts/stress.js
+```
+
+##### Search Performance Test
+
+Run the following command at the root of this repository:
+
+```sh
+k6 run scripts/search.js
+```
+
+### Instance with Repositories
+
+This is the suggested steps for instances with a list of cloned repositories.
+
+#### Step 1: Install k6
+
+Install k6 on your testing machine.
+
+Please refer to [k6 installation guide](https://k6.io/docs/getting-started/installation/) for detail.
+
+#### Step 2: Import the scripts
+
+Clone this repository onto your local machine --this should NOT be inside the machine that is hosting your Sourcegraph instance.
+
+#### Step 3: Configurations
+
+Update the [.setting.json file](.settings.json) using below as exmaple:
+
+```json
+{
+  "uri": "https://your.sourcegraph.com/",
+  "token": "YOUR_SOURCEGRAPH_TOKEN_HERE",
+  "size": "",
+  "users": "100",
+  "mode": "custom",
+  "repos": [
+    "github.com/sourcegraph/sourcegraph",
+    "github.com/sourcegraph/deploy-sourcegraph",
+    "github.com/google/crosvm",
+    "github.com/microsoft/TypeScript"
+  ]
+}
+```
+
+#### Step 4: Generate a list of customized queries
+
+The queryGenerator script will generate a list of random queries using the repos list provided in your [.setting.json file](.settings.json).
+
+Run the following command at the root of this repository:
+
+```sh
+node ./scripts/utils/queryGenerator.js
+```
 
 #### Step 5: Pick a test to run
 
