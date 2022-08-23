@@ -2,35 +2,41 @@ import { Trend } from 'k6/metrics';
 import { URL } from 'https://jslib.k6.io/url/1.0.0/index.js';
 import { check } from 'k6';
 
-// IMPORT SEARCH QUERIES FROM JSON
-// search queries for load test - load.js script
-export const searchQueries = JSON.parse(open('../../configs/queries/dev.json'));
-export const searchTypes = searchQueries.types;
-// search queries for search performance test - search.js script
-export const searchTestQueries = JSON.parse(
-  open('../../configs/queries/search.json')
-);
-// thresholds for tests
-export const testThresholds = JSON.parse(open('../options/thresholds.json'));
+// TYPES
+export const searchTypes = ['literal', 'regexp', 'structural', 'unindexed'];
 
 // ENDPOINT SETTINGS
 export const endpoints = ['graphql', 'stream'];
-const endpointSettings = JSON.parse(open('../../configs/settings.json'));
+const endpointSettings = JSON.parse(open('../../.settings.json'));
+export const userSettings = JSON.parse(open('../../.settings.json'));
 //uri
 export const uri = endpointSettings.uri
   ? endpointSettings.uri
   : __ENV.SG_LOADTESTS_URL;
 // token
 const accessToken = endpointSettings.token
-  ? endpointSettings.uri
+  ? endpointSettings.token
   : __ENV.SG_LOADTESTS_TOKEN;
 // instance size
 export const instanceSize = __ENV.SG_SIZE
-  ? __ENV.SG_SIZE
-  : endpointSettings.size;
+  ? __ENV.SG_SIZE.toLowerCase()
+  : endpointSettings.size.toLowerCase();
 export const graphqlEndpoint = new URL('/.api/graphql', uri).toString();
 const headers = { Authorization: `token ${accessToken}` };
 export const params = { headers };
+
+// IMPORT SEARCH QUERIES FROM JSON
+// search queries for load test - load.js script
+export const searchQueries =
+  endpointSettings.mode === 'dev'
+    ? JSON.parse(open('../../configs/queries/dev.json'))
+    : JSON.parse(open('../../.queries.json'));
+// search queries for search performance test - search.js script
+export const searchTestQueries = JSON.parse(
+  open('../../configs/queries/search.json')
+);
+// thresholds for tests
+export const testThresholds = JSON.parse(open('../options/thresholds.json'));
 
 // Create metrics module - time_to_first_byte
 export const TTFB = new Trend('time_to_first_byte', true);

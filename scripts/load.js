@@ -22,7 +22,7 @@ The test starts with 0 vitual users and ramp up from 0 to max concurrent user co
 each user would perform a random request according to the assigned distribution for each search type
 */
 
-// TEST SCRIPT CONFIGS
+// TEST SCRIPT CONFIGS / IN-IT
 const thresholds = testThresholds.load;
 const testConfig = JSON.parse(open(`options/load.json`))[instanceSize];
 testConfig.thresholds = thresholds;

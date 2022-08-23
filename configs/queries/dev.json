@@ -1,5 +1,4 @@
 {
-  "types": ["literal", "regexp", "structural", "unindexed"],
   "literal": [
     {
       "query": "repo:^github.com/microsoft/vscode$ webviewPanel",

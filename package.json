@@ -1,0 +1,20 @@
+{
+  "name": "k6",
+  "version": "0.0.0",
+  "description": "Load testing tool for Sourcegraph",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sourcegraph/k6.git"
+  },
+  "author": "abeatrix",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sourcegraph/k6/issues"
+  },
+  "homepage": "https://github.com/sourcegraph/k6#readme",
+  "type": "module"
+}

@@ -1,0 +1,13 @@
+{
+  "uri": "https://your.sourcegraph.com/",
+  "token": "YOUR_SOURCEGRAPH_TOKEN_HERE",
+  "size": "",
+  "users": "100",
+  "mode": "custom",
+  "repos": [
+    "github.com/sourcegraph/sourcegraph",
+    "github.com/sourcegraph/deploy-sourcegraph",
+    "github.com/google/crosvm",
+    "github.com/microsoft/TypeScript"
+  ]
+}

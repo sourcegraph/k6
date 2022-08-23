@@ -1,0 +1,86 @@
+{
+  "types": ["repo", "file", "path", "symbol"],
+  "queries": [
+    { "query": "graphQL", "type": "literal" },
+    { "query": "new URLSearchParams", "type": "literal" },
+    { "query": "roles", "type": "literal" },
+    { "query": ".gitignore", "type": "literal" },
+    { "query": "Width;", "type": "literal" },
+    { "query": "file:^scripts errorRegexp", "type": "literal" },
+    { "query": "new Map", "type": "literal" },
+    { "query": "proxy", "type": "literal" },
+    { "query": "method: 'POST'", "type": "literal" },
+    { "query": "proxies", "type": "literal" },
+    { "query": "TypeScript", "type": "literal" },
+    { "query": "bootstrap", "type": "literal" },
+    { "query": "EditorSettings case:yes", "type": "literal" },
+    { "query": "bootstrap", "type": "literal" },
+    { "query": "React.Component<BootstrapProps>", "type": "literal" },
+    { "query": "console.log lang:JavaScript case:yes", "type": "literal" },
+    { "query": "video", "type": "literal" },
+    { "query": "cros", "type": "literal" },
+    { "query": "device", "type": "literal" },
+    { "query": "constants", "type": "literal" },
+    { "query": "copy_config", "type": "literal" },
+    { "query": "event_source", "type": "literal" },
+    { "query": "events", "type": "literal" },
+    { "query": "import case:yes", "type": "literal" },
+    { "query": "videos", "type": "literal" },
+    { "query": "console lang:TypeScript", "type": "literal" },
+    { "query": "for _, case:yes", "type": "literal" },
+    { "query": "endpoints lang:Go", "type": "literal" },
+    { "query": "Result limit hit", "type": "literal" },
+    { "query": "pgsql", "type": "literal" },
+    { "query": "endpoint", "type": "literal" },
+    { "query": "newWithConfig", "type": "literal" },
+    { "query": "browser", "type": "literal" },
+    { "query": "NewCounterVec lang:Go", "type": "literal" },
+    { "query": "errorMessage", "type": "literal" },
+    { "query": "error", "type": "literal" },
+    { "query": "path", "type": "literal" },
+    { "query": "file", "type": "literal" },
+    {
+      "query": "docker-compose yaml patternType:regexp",
+      "type": "regexp"
+    },
+    {
+      "query": "*/.api/* patternType:regexp case:yes",
+      "type": "regexp"
+    },
+    { "query": "file:^scripts exec(**) patternType:regexp", "type": "regexp" },
+    { "query": "\bbtn-secondary\b patternType:regexp", "type": "regexp" },
+    {
+      "query": "getWebviewOptions.+vscode patternType:regexp",
+      "type": "regexp"
+    },
+    {
+      "query": "WebviewPanelContribution*extends patternType:regexp",
+      "type": "regexp"
+    },
+    {
+      "query": "type:diff repo:@*refs/heads/ after:'5 days ago' \b(auth[^o][^r]|security\b|cve|password|secure|unsafe|perms|permissions) patternType:regexp",
+      "type": "regexp"
+    },
+    {
+      "query": "type:diff TODO select:commit.diff.removed patternType:literal",
+      "type": "unindexed"
+    },
+    { "query": "type:commit test patternType:literal", "type": "unindexed" },
+    {
+      "query": "type:diff after:'1 week ago' .subscribe( lang:typescript patternType:literal",
+      "type": "unindexed"
+    },
+    {
+      "query": "fprintf(stderr, ..., err) lang:c patternType:structural",
+      "type": "structural"
+    },
+    {
+      "query": "try { :[matched_statements] } catch { :[matched_catch] } lang:TypeScript patternType:structural",
+      "type": "structural"
+    },
+    {
+      "query": "import {...} from 'rxjs' patternType:structural",
+      "type": "structural"
+    }
+  ]
+}
