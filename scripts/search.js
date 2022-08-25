@@ -33,7 +33,7 @@ export default function () {
     searchQueries.forEach((searchQuery) => {
       const searchType = searchQuery.type;
       const tags = { tag: { [searchType]: 'regular' } };
-      const body = makeGraphQLQuery('search', searchQuery.query);
+      const body = makeGraphQLQuery('search', { query: searchQuery.query });
       const res = http.post(graphqlEndpoint, body, params, tags);
       processResponse(res, tags);
       sleep(0.5);
@@ -45,7 +45,7 @@ export default function () {
     searchQueries.forEach((searchQuery) => {
       const searchType = searchQuery.type;
       const tags = { tag: { [searchType]: 'expensive' } };
-      const body = makeGraphQLQuery('search', searchQuery.query);
+      const body = makeGraphQLQuery('search', { query: searchQuery.query });
       const res = http.post(graphqlEndpoint, body, params, tags);
       processResponse(res, tags);
       sleep(0.5);

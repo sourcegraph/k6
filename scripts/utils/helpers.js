@@ -2,9 +2,35 @@ import { Trend } from 'k6/metrics';
 import { URL } from 'https://jslib.k6.io/url/1.0.0/index.js';
 import { check } from 'k6';
 
+// TYPES
+export const searchTypes = ['literal', 'regexp', 'structural', 'unindexed'];
+
+// ENDPOINT SETTINGS
+export const endpoints = ['graphql', 'stream'];
+const endpointSettings = JSON.parse(open('../../.settings.json'));
+export const userSettings = JSON.parse(open('../../.settings.json'));
+//uri
+export const uri = endpointSettings.uri
+  ? endpointSettings.uri
+  : __ENV.SG_LOADTESTS_URL;
+// token
+const accessToken = endpointSettings.token
+  ? endpointSettings.token
+  : __ENV.SG_LOADTESTS_TOKEN;
+// instance size
+export const instanceSize = __ENV.SG_SIZE
+  ? __ENV.SG_SIZE.toLowerCase()
+  : endpointSettings.size.toLowerCase();
+export const graphqlEndpoint = new URL('/.api/graphql', uri).toString();
+const headers = { Authorization: `token ${accessToken}` };
+export const params = { headers };
+
 // IMPORT SEARCH QUERIES FROM JSON
 // search queries for load test - load.js script
-export const searchQueries = JSON.parse(open('../../configs/queries/dev.json'));
+export const searchQueries =
+  endpointSettings.mode === 'dev'
+    ? JSON.parse(open('../../configs/queries/dev.json'))
+    : JSON.parse(open('../../.queries.json'));
 // search queries for search performance test - search.js script
 export const searchTestQueries = JSON.parse(
   open('../../configs/queries/search.json')
@@ -12,34 +38,13 @@ export const searchTestQueries = JSON.parse(
 // thresholds for tests
 export const testThresholds = JSON.parse(open('../options/thresholds.json'));
 
-// ENDPOINT SETTINGS
-const endpointSettings = JSON.parse(open('../../configs/settings.json'));
-//uri
-export const uri = endpointSettings.uri
-  ? endpointSettings.uri
-  : __ENV.SG_LOADTESTS_URL;
-// token
-const accessToken = endpointSettings.token
-  ? endpointSettings.uri
-  : __ENV.SG_LOADTESTS_TOKEN;
-// instance size
-export const instanceSize = __ENV.SG_SIZE
-  ? __ENV.SG_SIZE
-  : endpointSettings.size;
-export const graphqlEndpoint = new URL('/.api/graphql', uri).toString();
-const headers = { Authorization: `token ${accessToken}` };
-export const params = { headers };
-
 // Create metrics module - time_to_first_byte
 export const TTFB = new Trend('time_to_first_byte', true);
 
 // FUNCTION TO CREATE A STREAM REQUEST
 export function makeStreamEndpoint(searchQuery) {
   const streamEndpoint = new URL('/.api/search/stream', uri);
-  streamEndpoint.searchParams.append(
-    'q',
-    encodeURIComponent(searchQuery.query)
-  );
+  streamEndpoint.searchParams.append('q', searchQuery.query);
   streamEndpoint.searchParams.append('v', 'V2');
   streamEndpoint.searchParams.append('t', searchQuery.type);
   streamEndpoint.searchParams.append('display', 10);
@@ -55,6 +60,20 @@ const graphQLQueries = {
             }
           }
         }`,
+  highlighter: `query HighlightedFile(
+          $repoName: String!
+          $commitID: String!
+          $filePath: String!
+      ) {
+          repository(name: $repoName) {
+              commit(rev: $commitID) {
+                  file(path: $filePath) {
+                      isDirectory
+                      richHTML
+                  }
+              }
+          }
+      }`,
 };
 
 // FUNCTION TO CREATE A GRAPHQL QUERY
@@ -62,9 +81,7 @@ export function makeGraphQLQuery(query_type, variable) {
   const graphQL_query = graphQLQueries[query_type];
   return JSON.stringify({
     query: graphQL_query,
-    variables: {
-      query: variable,
-    },
+    variables: variable,
   });
 }
 
@@ -110,7 +127,11 @@ export function processBatchResponses(responses, searchType) {
 }
 
 // PROCESS INDIVIDUAL RESPONSE
-export function processResponse(response, tags) {
+export function processResponse(response, tags, highlight) {
   TTFB.add(response.timings.waiting, tags.tag);
-  check(response, { [tags.tag.type]: (res) => res.status === 200 }, tags.tag);
+  check(
+    response,
+    { [highlight ? highlight : tags.tag.type]: (res) => res.status === 200 },
+    tags.tag
+  );
 }

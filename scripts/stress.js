@@ -48,7 +48,7 @@ export default function () {
       const searchType = 'regexp';
       const tags = { tag: { type: searchType } };
       const searchQuery = randomItem(searchQueries[searchType]);
-      const body = makeGraphQLQuery('search', searchQuery.query);
+      const body = makeGraphQLQuery('search', { query: searchQuery.query });
       const res = http.post(graphqlEndpoint, body, params, tags);
       processResponse(res, tags);
       sleep(randomIntBetween(1, 5));
@@ -70,7 +70,7 @@ export default function () {
       const searchType = 'literal';
       const tags = { tag: { type: searchType } };
       const searchQuery = randomItem(searchQueries[searchType]);
-      const body = makeGraphQLQuery('search', searchQuery.query);
+      const body = makeGraphQLQuery('search', { query: searchQuery.query });
       const res = http.post(graphqlEndpoint, body, params, tags);
       processResponse(res, tags);
       sleep(randomIntBetween(1, 5));

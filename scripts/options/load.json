@@ -1,26 +1,23 @@
 {
   "s": {
-    "discardResponseBodies": true,
     "stages": [
-      { "duration": "2m", "target": 2000 },
-      { "duration": "6m", "target": 2000 },
-      { "duration": "2m", "target": 0 }
+      { "duration": "1m", "target": 2000 },
+      { "duration": "3m", "target": 2000 },
+      { "duration": "1m", "target": 0 }
     ]
   },
   "m": {
-    "discardResponseBodies": true,
     "stages": [
-      { "duration": "2m", "target": 4000 },
-      { "duration": "6m", "target": 4000 },
-      { "duration": "2m", "target": 0 }
+      { "duration": "1m", "target": 4000 },
+      { "duration": "3m", "target": 4000 },
+      { "duration": "1m", "target": 0 }
     ]
   },
   "l": {
-    "discardResponseBodies": true,
     "stages": [
-      { "duration": "2m", "target": 12000 },
-      { "duration": "6m", "target": 12000 },
-      { "duration": "2m", "target": 0 }
+      { "duration": "1m", "target": 12000 },
+      { "duration": "3m", "target": 12000 },
+      { "duration": "1m", "target": 0 }
     ]
   }
 }
