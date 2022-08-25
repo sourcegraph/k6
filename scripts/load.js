@@ -56,43 +56,62 @@ export default function () {
     group('stream', function () {
       createSearchRequest('regexp', 'stream');
     });
-  } else if (__VU % 10 == 3) {
+  } else {
     /* 
-    30% of the VUs send literal search requests to the stream
+    The rest of the VUs send literal search requests to the stream
     search API. It also has a shorter start time compare to other 
     search types as it is the most commonly performed searches 
     */
     group('stream', function () {
       createSearchRequest('literal', 'stream');
     });
-  } else {
-    /* 
-    The rest of the VUs (40%) hits frontpage url.
-    This stimulates users hitting the site in browser
-    it also has the shortest sleep time as more users spend more time
-    browsing results and pages than performing searches 
-    */
-    group('frontpage', function () {
-      createSearchRequest('frontpage', null);
-    });
   }
 
   /* HELPER FUNCTION */
   // Create a search request for specificed search type and endpoint
   function createSearchRequest(type, endpoint) {
-    sleep(randomIntBetween(0, 120));
+    sleep(randomIntBetween(0, 60));
     const tags = { tag: { type: type } };
     // frontpage calls have no endpoint and does not require search query
     const searchQuery = endpoint ? randomItem(searchQueries[type]) : null;
     let res = null;
+    let body = null;
     switch (endpoint) {
       case (endpoint = 'graphql'):
-        const body = makeGraphQLQuery('search', searchQuery.query);
+        body = makeGraphQLQuery('search', { query: searchQuery.query });
         res = http.post(graphqlEndpoint, body, params, tags);
+        sleep(randomIntBetween(0, 30));
         break;
       case (endpoint = 'stream'):
         const streamEndpoint = makeStreamEndpoint(searchQuery);
         res = http.get(streamEndpoint, params, tags);
+        if (res.body) {
+          const data = res.body.split`\n`.filter((line) =>
+            line.startsWith('data: [{"type":"')
+          );
+          data.forEach((d) => {
+            const results = JSON.parse(d.replace('data: ', ''));
+            if (!results.length) return;
+            results.forEach((r) => {
+              const variable = {
+                repoName: r.repository || '',
+                commitID: r.commit || '',
+                filePath: r.path || '',
+              };
+              const highlightBody = makeGraphQLQuery('highlighter', variable);
+              const highlightRes = http.post(
+                graphqlEndpoint,
+                highlightBody,
+                params,
+                tags
+              );
+              highlightRes
+                ? processResponse(highlightRes, tags, 'highlight')
+                : null;
+            });
+          });
+        }
+        sleep(randomIntBetween(0, 30));
         break;
       default:
         // set default for http calls to frontpage

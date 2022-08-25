@@ -44,10 +44,7 @@ export const TTFB = new Trend('time_to_first_byte', true);
 // FUNCTION TO CREATE A STREAM REQUEST
 export function makeStreamEndpoint(searchQuery) {
   const streamEndpoint = new URL('/.api/search/stream', uri);
-  streamEndpoint.searchParams.append(
-    'q',
-    encodeURIComponent(searchQuery.query)
-  );
+  streamEndpoint.searchParams.append('q', searchQuery.query);
   streamEndpoint.searchParams.append('v', 'V2');
   streamEndpoint.searchParams.append('t', searchQuery.type);
   streamEndpoint.searchParams.append('display', 10);
@@ -63,6 +60,20 @@ const graphQLQueries = {
             }
           }
         }`,
+  highlighter: `query HighlightedFile(
+          $repoName: String!
+          $commitID: String!
+          $filePath: String!
+      ) {
+          repository(name: $repoName) {
+              commit(rev: $commitID) {
+                  file(path: $filePath) {
+                      isDirectory
+                      richHTML
+                  }
+              }
+          }
+      }`,
 };
 
 // FUNCTION TO CREATE A GRAPHQL QUERY
@@ -70,9 +81,7 @@ export function makeGraphQLQuery(query_type, variable) {
   const graphQL_query = graphQLQueries[query_type];
   return JSON.stringify({
     query: graphQL_query,
-    variables: {
-      query: variable,
-    },
+    variables: variable,
   });
 }
 
@@ -118,7 +127,11 @@ export function processBatchResponses(responses, searchType) {
 }
 
 // PROCESS INDIVIDUAL RESPONSE
-export function processResponse(response, tags) {
+export function processResponse(response, tags, highlight) {
   TTFB.add(response.timings.waiting, tags.tag);
-  check(response, { [tags.tag.type]: (res) => res.status === 200 }, tags.tag);
+  check(
+    response,
+    { [highlight ? highlight : tags.tag.type]: (res) => res.status === 200 },
+    tags.tag
+  );
 }
