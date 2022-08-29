@@ -35,7 +35,7 @@ export function setup() {
 
 // TEST SCRIPT
 export default function () {
-  if (__VU % 10 == 1) {
+  if (__VU % 10 == 0) {
     /*  
     10% of the VUs sends a random search request chosen
     from any search types to a random API endpoint.
@@ -48,7 +48,7 @@ export default function () {
       const searchType = randomItem(searchTypes);
       createSearchRequest(searchType, endpoint);
     });
-  } else if (__VU % 10 == 2) {
+  } else if (__VU % 10 <= 2) {
     /* 
     20% of the VUs sends regexp search requests to the stream
     search API.

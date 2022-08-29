@@ -29,7 +29,7 @@ export function setup() {
 
 // TEST SCRIPT
 export default function () {
-  if (__VU % 10 == 1) {
+  if (__VU % 10 == 0) {
     // 10% of the VUs perform a random search request chosen from any search types
     group('stream', function () {
       sleep(randomIntBetween(1, 60));
@@ -41,7 +41,7 @@ export default function () {
       processResponse(res, tags);
       sleep(randomIntBetween(1, 5));
     });
-  } else if (__VU % 10 == 2) {
+  } else if (__VU % 10 <= 2) {
     // 20% of the VUs performs regexp searches
     group('graphQL - Regexp', function () {
       sleep(randomIntBetween(1, 30));
@@ -53,17 +53,7 @@ export default function () {
       processResponse(res, tags);
       sleep(randomIntBetween(1, 5));
     });
-  } else if (__VU % 10 == 3) {
-    // 30% of the VUs hitting frontpage
-    group('frontpage', function () {
-      sleep(randomIntBetween(1, 10));
-      const searchType = 'frontpage';
-      const tags = { tag: { type: searchType } };
-      const res = http.get(uri, null, tags);
-      processResponse(res, tags);
-      sleep(randomIntBetween(1, 5));
-    });
-  } else {
+   } else {
     // the rest of the VUs (40%) performs literal searches
     group('graphQL - Literal', function () {
       sleep(randomIntBetween(1, 30));
