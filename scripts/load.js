@@ -69,6 +69,7 @@ export default function () {
       createSearchRequest('literal', 'stream');
     });
   }
+  sleep(randomIntBetween(0, 30));
   /* HELPER FUNCTION */
   // Create a search request for specificed search type and endpoint
   function createSearchRequest(type, endpoint) {
@@ -92,7 +93,7 @@ export default function () {
               const variable = makeHighlightVariable(r);
               const hBody = makeGraphQLQuery('highlighter', variable);
               const hRes = http.post(graphqlEndpoint, hBody, params, tags);
-              processResponse(hRes, tags, 'highlight');
+              hRes ? processResponse(hRes, tags, 'highlight') : null;
             });
           }
         });

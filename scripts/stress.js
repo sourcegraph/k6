@@ -86,7 +86,7 @@ export default function () {
               const variable = makeHighlightVariable(r);
               const hBody = makeGraphQLQuery('highlighter', variable);
               const hRes = http.post(graphqlEndpoint, hBody, params, tags);
-              processResponse(hRes, tags, 'highlight');
+              hRes ? processResponse(hRes, tags, 'highlight') : null;
             });
           }
         });
