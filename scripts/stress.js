@@ -33,7 +33,7 @@ export default function () {
     // 10% of the VUs perform a random search request chosen from any search types
     group('stream', function () {
       sleep(randomIntBetween(1, 60));
-      const searchType = randomItem(searchQueries.types);
+      const searchType = randomItem(Object.keys(searchQueries));
       const tags = { tag: { type: searchType } };
       const searchQuery = randomItem(searchQueries[searchType]);
       const streamEndpoint = makeStreamEndpoint(searchQuery);
