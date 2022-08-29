@@ -128,10 +128,11 @@ export function processBatchResponses(responses, searchType) {
 
 // PROCESS INDIVIDUAL RESPONSE
 export function processResponse(response, tags, highlight) {
-  TTFB.add(response.timings.waiting, tags.tag);
+  const checkTag = highlight ? { tag: { type: 'highlight' } } : tags;
+  TTFB.add(response.timings.waiting, checkTag.tag);
   check(
     response,
-    { [highlight ? highlight : tags.tag.type]: (res) => res.status === 200 },
-    tags.tag
+    { [checkTag.tag.type]: (res) => res.status === 200 },
+    checkTag.tag
   );
 }

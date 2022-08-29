@@ -183,7 +183,7 @@
       "type": "regexp"
     },
     {
-      "query": "type:diff repo:github.com/sourcegraph/sourcegraph$ repo:@*refs/heads/ after:'5 days ago' \b(auth[^o][^r]|security\b|cve|password|secure|unsafe|perms|permissions) count:10 patternType:regexp",
+      "query": "type:diff repo:github.com/sourcegraph/sourcegraph$ after:'5 days ago' \b(auth[^o][^r]|security\b|cve|password|secure|unsafe|perms|permissions) count:10 patternType:regexp",
       "type": "regexp"
     }
   ],
