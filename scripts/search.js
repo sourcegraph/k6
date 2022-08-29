@@ -6,6 +6,7 @@ import {
   searchTestQueries,
   testThresholds,
   uri,
+  instanceSize,
   params,
   graphqlEndpoint,
 } from './utils/helpers.js';
