@@ -118,6 +118,15 @@ export function makeGraphQLRequests(search_type) {
   return requests;
 }
 
+// Return variable for highlight graphql request
+export function makeHighlightVariable(result) {
+  return {
+    repoName: result.repository || '',
+    commitID: result.commit || '',
+    filePath: result.path || '',
+  };
+}
+
 // PROCESS RESPONSES IN BATCH
 export function processBatchResponses(responses, searchType) {
   const tags = { tag: { type: searchType } };
@@ -134,5 +143,12 @@ export function processResponse(response, tags, highlight) {
     response,
     { [checkTag.tag.type]: (res) => res.status === 200 },
     checkTag.tag
+  );
+}
+
+// Filter stream search results to get matches
+export function getStreamSearchMatches(response_body) {
+  return response_body.split`\n`.filter((line) =>
+    line.startsWith('data: [{"type":"')
   );
 }

@@ -9,10 +9,12 @@ import {
   graphqlEndpoint,
   instanceSize,
   makeGraphQLQuery,
+  makeHighlightVariable,
   makeStreamEndpoint,
   params,
   processResponse,
   searchQueries,
+  getStreamSearchMatches,
   searchTypes,
   testThresholds,
   uri,
@@ -30,11 +32,13 @@ export const options = testConfig;
 
 // TEST SCRIPT IN-IT FUNCTION
 export function setup() {
-  console.log('Load Testing Instance: ' + uri);
+  console.log(`Load Testing Size ${instanceSize} Instance: ${uri}`);
 }
 
 // TEST SCRIPT
 export default function () {
+  // Enforce different start time
+  sleep(randomIntBetween(0, 60));
   if (__VU % 10 == 0) {
     /*  
     10% of the VUs sends a random search request chosen
@@ -59,64 +63,40 @@ export default function () {
   } else {
     /* 
     The rest of the VUs send literal search requests to the stream
-    search API. It also has a shorter start time compare to other 
-    search types as it is the most commonly performed searches 
+    search API.
     */
     group('stream', function () {
       createSearchRequest('literal', 'stream');
     });
   }
-
   /* HELPER FUNCTION */
   // Create a search request for specificed search type and endpoint
   function createSearchRequest(type, endpoint) {
-    sleep(randomIntBetween(0, 60));
     const tags = { tag: { type: type } };
-    // frontpage calls have no endpoint and does not require search query
-    const searchQuery = endpoint ? randomItem(searchQueries[type]) : null;
-    let res = null;
-    let body = null;
-    switch (endpoint) {
-      case (endpoint = 'graphql'):
-        body = makeGraphQLQuery('search', { query: searchQuery.query });
-        res = http.post(graphqlEndpoint, body, params, tags);
-        sleep(randomIntBetween(0, 30));
-        break;
-      case (endpoint = 'stream'):
-        const streamEndpoint = makeStreamEndpoint(searchQuery);
-        res = http.get(streamEndpoint, params, tags);
-        if (res.body) {
-          const data = res.body.split`\n`.filter((line) =>
-            line.startsWith('data: [{"type":"')
-          );
-          data.forEach((d) => {
-            const results = JSON.parse(d.replace('data: ', ''));
-            if (!results.length) return;
+    // Pick a search query base on type
+    const searchQuery = randomItem(searchQueries[type]);
+    if (endpoint === 'graphql') {
+      const body = makeGraphQLQuery('search', { query: searchQuery.query });
+      const res = http.post(graphqlEndpoint, body, params, tags);
+      res ? processResponse(res, tags) : null;
+    } else if (endpoint === 'stream') {
+      const streamEndpoint = makeStreamEndpoint(searchQuery);
+      const res = http.get(streamEndpoint, params, tags);
+      res ? processResponse(res, tags) : null;
+      if (res && res.body) {
+        const data = getStreamSearchMatches(res.body);
+        data.forEach((d) => {
+          const results = JSON.parse(d.replace('data: ', ''));
+          if (results.length) {
             results.forEach((r) => {
-              const variable = {
-                repoName: r.repository || '',
-                commitID: r.commit || '',
-                filePath: r.path || '',
-              };
-              const highlightBody = makeGraphQLQuery('highlighter', variable);
-              const highlightRes = http.post(
-                graphqlEndpoint,
-                highlightBody,
-                params,
-                tags
-              );
-              highlightRes
-                ? processResponse(highlightRes, tags, 'highlight')
-                : null;
+              const variable = makeHighlightVariable(r);
+              const hBody = makeGraphQLQuery('highlighter', variable);
+              const hRes = http.post(graphqlEndpoint, hBody, params, tags);
+              processResponse(hRes, tags, 'highlight');
             });
-          });
-        }
-        sleep(randomIntBetween(0, 30));
-        break;
-      default:
-        // set default for http calls to frontpage
-        res = http.get(uri, searchQuery, tags);
+          }
+        });
+      }
     }
-    res ? processResponse(res, tags) : null;
   }
 }

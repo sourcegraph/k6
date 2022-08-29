@@ -1,6 +1,5 @@
 {
   "s": {
-    "discardResponseBodies": true,
     "scenarios": {
       "stress": {
         "executor": "constant-vus",
@@ -11,7 +10,6 @@
     }
   },
   "m": {
-    "discardResponseBodies": true,
     "scenarios": {
       "stress": {
         "executor": "constant-vus",
@@ -22,7 +20,6 @@
     }
   },
   "l": {
-    "discardResponseBodies": true,
     "scenarios": {
       "stress": {
         "executor": "constant-vus",

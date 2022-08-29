@@ -22,7 +22,9 @@ export const options = testConfig;
 
 // TEST SCRIPT IN-IT FUNCTION
 export function setup() {
-  console.log('Search Performance Test - Instance: ' + uri);
+  console.log(
+    `Search Performance Testing on Size ${instanceSize} Instance: ${uri}`
+  );
 }
 
 // TEST SCRIPT

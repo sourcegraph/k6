@@ -25,13 +25,12 @@ Types of searches:
 
 __n__ is equal to 20% of the user count that the instance supports before it ramps back down to 0.
 
-| Size | Users | n (expected users) |
-|------|-------|--------------------|
-| S    | 10000 | 2000               |
-| M    | 20000 | 4000               |
-| L    | 60000 | 12000              |
-| XL   |       |                    |
-| 2XL  |       |                    |
+| Size   | Users | n (expected users) |
+|--------|-------|--------------------|
+| L      | 10000 | 2000               |
+| XL     | 20000 | 4000               |
+| XXL    | 60000 | 12000              |
+| XXXL   |       |                    |
 
 ### Search Performance Test
 
@@ -65,13 +64,12 @@ k6 run scripts/search.js
 
 ### Load Test
 
-Test duration: ~10m
+Test duration: ~5m
 
-The load test ramps up from 0 to __n__ concurrent users (see n-users table above) over 2 minutes, and stays at __n__ concurrent users for 6 minutes, before ramping back down to 0 in 2 minutes. Each virtual user would send a a random request to one of the instance endpoints at a random time over the test duration with the following distribution: 
-- 40% of the VUs -GET request to frontpage
-- 30% of the VUs -POST request to the graphQL API endpoint with a random literal search query
-- 20% of the VUs -POST request to the graphQL API endpoint with a random regexp search query
-- 10% of the VUs -GET request to the stream search API endpoint with a random search query
+The load test ramps up from 0 to __n__ concurrent users (see n-users table above) over 1 minutes, and stays at __n__ concurrent users for 3 minutes, before ramping back down to 0 in 1 minutes. Each virtual user would send a a random request to one of the instance endpoints at a random time over the test duration with the following distribution: 
+- 60% of the VUs -GET request to the stream search API endpoint with a random literal search query
+- 20% of the VUs -GET request to the stream search API endpoint with a random regexp search query
+- 10% of the VUs -POST request to the graphQL API endpoint with a random search query
 
 This distrubtion is based on our data, where about 70% of all the searches performed are literal search, and 1-2% are structural and unindexed searches. 
 
@@ -89,7 +87,7 @@ k6 run -e SG_SIZE=<size> scripts/load.js
 
 Test duration: ~1m
 
-The stress test runs the same script as the load test aggressively in a short time period. 
+The stress test runs the same script as the load test but more aggressively in a short period of time. 
 
 The test tries to overwhelm the system with an extreme surge of load by having __n__ concurrent users sending random requests at random times to the instance for 60 seconds.
 
