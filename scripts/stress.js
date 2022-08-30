@@ -18,7 +18,7 @@ import {
 } from './utils/helpers.js';
 
 // TEST SCRIPT CONFIGS
-const thresholds = testThresholds.load;
+const thresholds = testThresholds.stress;
 const testConfig = JSON.parse(open(`options/stress.json`))[instanceSize];
 testConfig.thresholds = thresholds;
 export const options = testConfig;

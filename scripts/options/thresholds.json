@@ -40,6 +40,11 @@
     "checks{type:regexp}": ["rate>0.9"],
     "checks{type:structural}": ["rate>0.5"],
     "checks{type:unindexed}": ["rate>0.5"],
-    "checks{type:highlight}": ["rate>0.9"]
+    "checks{type:highlight}": ["rate>0.9"],
+    "time_to_first_byte{type:highlight}": ["med<2000"],
+    "time_to_first_byte{type:literal}": ["med<5500"],
+    "time_to_first_byte{type:regexp}": ["med<35000"],
+    "time_to_first_byte{type:structural}": ["med<35000"],
+    "time_to_first_byte{type:unindexed}": ["med<35000"]
   }
 }
