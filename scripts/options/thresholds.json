@@ -32,5 +32,14 @@
     "time_to_first_byte{type:regexp}": ["med<35000"],
     "time_to_first_byte{type:structural}": ["med<35000"],
     "time_to_first_byte{type:unindexed}": ["med<35000"]
+  },
+  "stress": {
+    "checks": [{ "threshold": "rate>0.9", "abortOnFail": true }],
+    "http_req_failed": [{ "threshold": "rate<=0.5", "abortOnFail": true }],
+    "checks{type:literal}": ["rate>0.9"],
+    "checks{type:regexp}": ["rate>0.9"],
+    "checks{type:structural}": ["rate>0.5"],
+    "checks{type:unindexed}": ["rate>0.5"],
+    "checks{type:highlight}": ["rate>0.9"]
   }
 }

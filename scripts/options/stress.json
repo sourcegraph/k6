@@ -2,30 +2,30 @@
   "s": {
     "scenarios": {
       "stress": {
-        "executor": "constant-vus",
+        "executor": "per-vu-iterations",
         "vus": 2000,
-        "duration": "60s",
-        "gracefulStop": "3s"
+        "iterations": 1,
+        "maxDuration": "90s"
       }
     }
   },
   "m": {
     "scenarios": {
       "stress": {
-        "executor": "constant-vus",
+        "executor": "per-vu-iterations",
         "vus": 4000,
-        "duration": "60s",
-        "gracefulStop": "3s"
+        "iterations": 1,
+        "maxDuration": "90s"
       }
     }
   },
   "l": {
     "scenarios": {
       "stress": {
-        "executor": "constant-vus",
+        "executor": "per-vu-iterations",
         "vus": 12000,
-        "duration": "60s",
-        "gracefulStop": "3s"
+        "iterations": 1,
+        "maxDuration": "90s"
       }
     }
   }

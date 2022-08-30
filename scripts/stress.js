@@ -1,9 +1,6 @@
-import { group, sleep } from 'k6';
+import { group } from 'k6';
 import http from 'k6/http';
-import {
-  randomIntBetween,
-  randomItem,
-} from 'https://jslib.k6.io/k6-utils/1.2.0/index.js';
+import { randomItem } from 'https://jslib.k6.io/k6-utils/1.2.0/index.js';
 import {
   endpoints,
   getStreamSearchMatches,
@@ -20,7 +17,7 @@ import {
   uri,
 } from './utils/helpers.js';
 
-// TEST SCRIPT CONFIGS / IN-IT
+// TEST SCRIPT CONFIGS
 const thresholds = testThresholds.load;
 const testConfig = JSON.parse(open(`options/stress.json`))[instanceSize];
 testConfig.thresholds = thresholds;
@@ -28,36 +25,33 @@ export const options = testConfig;
 
 // TEST SCRIPT IN-IT FUNCTION
 export function setup() {
-  console.log(`Stress Testing Size ${instanceSize} Instance: ${uri}`);
+  console.log(
+    `Stress Testing Size ${instanceSize.toUpperCase()} Instance: ${uri}`
+  );
 }
 
 // TEST SCRIPT
+/*  
+  10% of the VUs sends a random search request chosen
+  from any search types to a random API endpoint.
+  20% of the VUs sends regexp search requests to the stream
+  search API.
+  The rest of the VUs send literal search requests to the stream
+  search API.
+*/
 export default function () {
-  // Enforce different start time
-  sleep(randomIntBetween(0, 10));
   if (__VU % 10 == 0) {
-    /*  
-    10% of the VUs sends a random search request chosen
-    from any search types to a random API endpoint.
-    */
+    // Choose between stream or graphQL endpoint
     const endpoint = randomItem(endpoints);
     group(endpoint, function () {
       const searchType = randomItem(searchTypes);
       createSearchRequest(searchType, endpoint);
     });
   } else if (__VU % 10 <= 2) {
-    /* 
-    20% of the VUs sends regexp search requests to the stream
-    search API.
-    */
     group('stream', function () {
       createSearchRequest('regexp', 'stream');
     });
   } else {
-    /* 
-    The rest of the VUs send literal search requests to the stream
-    search API.
-    */
     group('stream', function () {
       createSearchRequest('literal', 'stream');
     });
@@ -65,6 +59,7 @@ export default function () {
 
   /* HELPER FUNCTION */
   // Create a search request for specificed search type and endpoint
+  // for each user (__VU)
   function createSearchRequest(type, endpoint) {
     const tags = { tag: { type: type } };
     // Pick a search query base on type
