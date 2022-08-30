@@ -30,7 +30,7 @@ __n__ is equal to 20% of the user count that the instance supports before it ram
 | L      | 10000 | 2000               |
 | XL     | 20000 | 4000               |
 | XXL    | 60000 | 12000              |
-| XXXL   |       |                    |
+| XXXL   | -     | -                  |
 
 ### Search Performance Test
 
@@ -81,24 +81,26 @@ To start a load test, run the following command at the root of this repository:
 # example for size small:
 # k6 run -e SG_SIZE=s scripts/stress.js
 k6 run -e SG_SIZE=<size> scripts/load.js
+# OR, if you have the instance info added to the .settings.json:
+k6 run scripts/load.js
 ```
 
 ### Stress Test
 
-Test duration: ~1m
+Test duration: ~1.5m Max
 
-The stress test runs the same script as the load test but more aggressively in a short period of time. 
+The stress test tries to overwhelm the system with an extreme surge of load by having __n__ concurrent users sending one random search request at the same time to the instance.
 
-The test tries to overwhelm the system with an extreme surge of load by having __n__ concurrent users sending random requests at random times to the instance for 60 seconds.
-
-> Note: The response times in a stress test is expected to be slower than usual, as we should rather focus on the request failing rate instead. Therefore, we should look at the request failure ratio (http_req_failed) in the end-of-test summary. The successful-calls (check) ratio for a well-performing instance should be above 90%.
+> Note: In a stress test result, we look at the request failure ratio (http_req_failed) in the end-of-test summary. The successful-calls (check) ratio for a well-performing instance should be above 90%.
 
 To start a stress test, run the following command at the root of this repository:
 
 ```sh
-# example for size small: 
+# example for a size small instance: 
 # k6 run -e SG_SIZE=s scripts/stress.js
 k6 run -e SG_SIZE=<size> scripts/stress.js
+# OR, if you have the instance info added to the .settings.json:
+k6 run scripts/stress.js
 ```
 
 ## Instructions
@@ -283,7 +285,7 @@ ERRO[0000] TypeError: Invalid scheme
 This error indicates that your testing machine does not have enough TCP sockets opened to run the tests. Please refer to the k6 docs here for more detail. A general solution is to increase the user limits on your machine using the following command:
 
 ```bash
-# Adjust the suggested number 250000 if needed
+# Adjust the number to 250000 or more when needed
 ulimit -n 250000
 ```
 
