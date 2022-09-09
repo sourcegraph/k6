@@ -23,8 +23,10 @@ export const instanceSize = __ENV.SG_SIZE
   : endpointSettings.size.toLowerCase();
 export const graphqlEndpoint = new URL('/.api/graphql', uri).toString();
 const headers = { Authorization: `token ${accessToken}` };
-export const params = { headers };
-
+export const params = {
+  headers,
+  timeout: "70s", // 60s backend timeout + 10s buffer for RTT
+};
 // IMPORT SEARCH QUERIES FROM JSON
 // search queries for load test - load.js script
 export const searchQueries =
