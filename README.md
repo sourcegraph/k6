@@ -25,12 +25,17 @@ Types of searches:
 
 __n__ is equal to 20% of the user count that the instance supports before it ramps back down to 0.
 
-| Size   | Users | n (expected users) |
-|--------|-------|--------------------|
-| L      | 10000 | 2000               |
-| XL     | 20000 | 4000               |
-| XXL    | 60000 | 12000              |
-| XXXL   | -     | -                  |
+| Size   | Users  | n (expected users)  |
+|--------|--------|---------------------|
+| XXXS   | 50     | 10                  |
+| XXS    | 100    | 20                  |
+| XS     | 500    | 100                 |
+| S      | 1,000  | 200                 |
+| M      | 5,000  | 1,000               |
+| L      | 10,000 | 2,000               |
+| XL     | 20,000 | 4,000               |
+| XXL    | 60,000 | 12,000              |
+| XXXL   | -      | -                   |
 
 ### Search Performance Test
 

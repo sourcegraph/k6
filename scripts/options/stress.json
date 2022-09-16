@@ -1,9 +1,39 @@
 {
+  "xxxs": {
+    "scenarios": {
+      "stress": {
+        "executor": "per-vu-iterations",
+        "vus": 10,
+        "iterations": 1,
+        "maxDuration": "90s"
+      }
+    }
+  },
+  "xxs": {
+    "scenarios": {
+      "stress": {
+        "executor": "per-vu-iterations",
+        "vus": 20,
+        "iterations": 1,
+        "maxDuration": "90s"
+      }
+    }
+  },
+  "xs": {
+    "scenarios": {
+      "stress": {
+        "executor": "per-vu-iterations",
+        "vus": 100,
+        "iterations": 1,
+        "maxDuration": "90s"
+      }
+    }
+  },
   "s": {
     "scenarios": {
       "stress": {
         "executor": "per-vu-iterations",
-        "vus": 2000,
+        "vus": 200,
         "iterations": 1,
         "maxDuration": "90s"
       }
@@ -13,13 +43,33 @@
     "scenarios": {
       "stress": {
         "executor": "per-vu-iterations",
-        "vus": 4000,
+        "vus": 1000,
         "iterations": 1,
         "maxDuration": "90s"
       }
     }
   },
   "l": {
+    "scenarios": {
+      "stress": {
+        "executor": "per-vu-iterations",
+        "vus": 2000,
+        "iterations": 1,
+        "maxDuration": "90s"
+      }
+    }
+  },
+  "xl": {
+    "scenarios": {
+      "stress": {
+        "executor": "per-vu-iterations",
+        "vus": 4000,
+        "iterations": 1,
+        "maxDuration": "90s"
+      }
+    }
+  },
+  "xxl": {
     "scenarios": {
       "stress": {
         "executor": "per-vu-iterations",
