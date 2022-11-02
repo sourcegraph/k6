@@ -21,16 +21,18 @@ Types of searches:
 - structural search - example: 'repo:^github.com/sourcegraph/sourcegraph$ try { :[matched_statements] } catch { :[matched_catch] } patternType:structural'
 - unindexed search - example: 'repo:^github.com/sourcegraph/sourcegraph$ type:diff TODO select:commit.diff.removed'
 
-### n-users
+### Size Chart
+
+#### n-users
 
 __n__ is equal to 20% of the user count that the instance supports before it ramps back down to 0.
 
 | Size   | Users | n (expected users) |
 |--------|-------|--------------------|
-| L      | 10000 | 2000               |
-| XL     | 20000 | 4000               |
-| XXL    | 60000 | 12000              |
-| XXXL   | -     | -                  |
+| S      | 10000 | 2000               |
+| M      | 20000 | 4000               |
+| L      | 60000 | 12000              |
+| XL.    | -     | -                  |
 
 ### Search Performance Test
 
