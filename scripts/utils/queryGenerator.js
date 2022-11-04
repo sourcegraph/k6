@@ -8,7 +8,7 @@ const queryComponents = JSON.parse(
 );
 const repos = userSettings.repos;
 if (!repos) {
-  console.log("no repos are defined, please edit '.settings.json'")
+  console.log("No repos are defined, please edit '.settings.json'\nSee README.md for more details.")
   process.exit(1)
 }
 
