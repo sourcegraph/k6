@@ -260,6 +260,16 @@ Run the following command at the root of this repository:
 k6 run scripts/search.js
 ```
 
+## Generating Curl commands with the test requests 
+
+It can be useful to share a `curl` command of the requests being generate by this tool. To get them, run the following command at the root of the repository: 
+
+```sh
+k6 run scripts/utils/dumpQueries.js
+```
+
+The script will print a single log message containing a Markdown string that can easily be shared (with token and url redacted). 
+
 ## Known Limitations
 
 - Scaling suggestions for indexserver likely don’t include ctags requirements which can be hefty for files with lots of symbols
