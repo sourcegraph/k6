@@ -7,6 +7,11 @@ const queryComponents = JSON.parse(
   fs.readFileSync('scripts/utils/generator.json').toString()
 );
 const repos = userSettings.repos;
+if (!repos) {
+  console.log("No repos are defined, please edit '.settings.json'\nSee README.md for more details.")
+  process.exit(1)
+}
+
 if (repos.length > 1) {
   const newQueries = {
     literal: [],
