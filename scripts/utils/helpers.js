@@ -7,20 +7,20 @@ export const searchTypes = ['literal', 'regexp', 'structural', 'unindexed'];
 
 // ENDPOINT SETTINGS
 export const endpoints = ['graphql', 'stream'];
-const endpointSettings = JSON.parse(open('../../.settings.json'));
-export const userSettings = JSON.parse(open('../../.settings.json'));
+export const settings = JSON.parse(open('../../.settings.json'));
+
 //uri
-export const uri = endpointSettings.uri
-  ? endpointSettings.uri
+export const uri = settings.uri
+  ? settings.uri
   : __ENV.SG_LOADTESTS_URL;
 // token
-const accessToken = endpointSettings.token
-  ? endpointSettings.token
+const accessToken = settings.tokens != null && settings.tokens.length > 0
+  ? settings.tokens.pop()
   : __ENV.SG_LOADTESTS_TOKEN;
 // instance size
 export const instanceSize = __ENV.SG_SIZE
   ? __ENV.SG_SIZE.toLowerCase()
-  : endpointSettings.size.toLowerCase();
+  : settings.size.toLowerCase();
 export const graphqlEndpoint = new URL('/.api/graphql', uri).toString();
 const headers = { Authorization: `token ${accessToken}` };
 export const params = {
@@ -30,7 +30,7 @@ export const params = {
 // IMPORT SEARCH QUERIES FROM JSON
 // search queries for load test - load.js script
 export const searchQueries =
-  endpointSettings.mode === 'dev'
+  settings.mode === 'dev'
     ? JSON.parse(open('../../configs/queries/dev.json'))
     : JSON.parse(open('../../.queries.json'));
 // search queries for search performance test - search.js script
