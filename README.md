@@ -1,4 +1,6 @@
-# K6 for Sourcegraph
+# K6 for Sourcegraph - Internal
+
+📣 This is currently for internal-use only
 
 This repository contains scripts for k6, an open-source tool for load testing, to run in order to performance tests on a Sourcegraph instance.
 
