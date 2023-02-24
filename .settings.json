@@ -1,6 +1,27 @@
 {
-  "uri": "",
-  "token": "",
+  "uri": "https://scaletesting.sgdev.org",
+  "tokens": [
+    "3c67dfb28491e1656dd02fa4bf5d671b6842fd65",
+    "83debc1024645f66df3445bb3fa61d0c8e22b37a",
+    "8d68c96510bd174bc8d67d8451d7d175edb2b13e",
+    "6d6e1ec0a3e8c2fab76f6beefcb9ba0f79a77571",
+    "92d195ad850878fba97c2de7e4ef831a4869f77f",
+    "707e999dd4994f814a0e64e5b8e3e446434a457f",
+    "a2018d33d6bd6147ce09789aaa5d15440a4b7245",
+    "02e6e0781743a57d0bf2621d3d44582433fbae92",
+    "35bd9ce6e5acead085477f33ee7efaa9610e4a26",
+    "4b66127cbe556a83ecc241056f70b97fab2251c1",
+    "97921e5f2e2fe83c3a8f884e228c8629ec4d8b57",
+    "77c08dafcf8d8031f921dae8784a9992015c8ed6",
+    "5300dfca58623a1242561801d264ddb73e38d1ae",
+    "a98aca60c7c23ed4fa4766674840f6e663f8f0bd",
+    "2febe905e82f5b73b5783ddfd1eed1f87ae21e5a",
+    "656ced3b04f30a28267b83e98e73f5356b32dd6f",
+    "51e5f2ad85277bbb808721833f61f4df9e71a604",
+    "6fd92d8be4a9eb352ab1d7ea4d9fd8e901b3fece",
+    "95cf1719c40c3a3a3cd98eef1b67ccd96ad9e36d",
+    "49a925f7c49eb236cb7d0316cea9b9254a7ade85"
+  ],
   "size": "m",
   "mode": "dev"
 }
