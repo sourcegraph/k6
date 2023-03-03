@@ -21,12 +21,12 @@ const testConfig = JSON.parse(open('./options/iam.json'));
 testConfig.thresholds = thresholds;
 export const options = testConfig;
 
-const searchTestQueries = JSON.parse(open('../configs/queries/iam.json'));
+const testQueries = JSON.parse(open('../configs/queries/iam.json'));
 
 // TEST SCRIPT IN-IT FUNCTION
 export const setup = () => {
   console.log(
-    `Search Performance Testing on Size ${instanceSize} Instance: ${uri}`
+    `List Repos Performance Testing on Size ${instanceSize} Instance: ${uri}`
   );
 
   const tokens = settings.tokens;
@@ -48,19 +48,13 @@ const createRequestParams = (token) => {
   });
 }
 
-const getRandomQuery = () => {
-  const searchQueries = searchTestQueries.authzQuery;
-  return searchQueries[Math.floor(Math.random() * searchQueries.length)]
-}
-
 // TEST SCRIPT
 export default () => {
   // REGULAR QUERIES
   group('authzQuery', () => {
-    const searchQuery = getRandomQuery()
-    const searchType = searchQuery.type;
-    const tags = { tag: { [searchType]: 'authzQuery' } };
-    const body = makeGraphQLQuery('search', { query: searchQuery.query });
+    const queryParams = testQueries.repoList;
+    const tags = { tag: { repoList: 'authzQuery' } };
+    const body = makeGraphQLQuery('listRepos', queryParams);
     const params = createRequestParams(getRandomToken())
     const res = http.post(graphqlEndpoint, body, params, tags);
     processResponse(res, tags);

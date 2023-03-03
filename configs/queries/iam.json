@@ -1,24 +1,6 @@
 {
-  "authzQuery": [
-    {
-      "query": "repo:github.com/sourcegraph/sourcegraph$ TypeScript count:10",
-      "type": "literal"
-    },
-    {
-      "query": "blank repo lang:markdown",
-      "type": "literal"
-    },
-    {
-      "query": "blank repo lang:markdown count:100",
-      "type": "literal"
-    },
-    {
-      "query": "blank repo lang:markdown count:10",
-      "type": "literal"
-    },
-    {
-      "query": "repo:^ghe-scaletesting\\.sgdev\\.org/blank200k/repo000000002$ file:^README\\.md",
-      "type": "literal"
-    }
-  ]
+  "repoList": {
+    "externalService": "RXh0ZXJuYWxTZXJ2aWNlOjI2",
+    "first": 100
+  }
 }

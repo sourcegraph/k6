@@ -76,6 +76,16 @@ const graphQLQueries = {
               }
           }
       }`,
+  listRepos: `
+    query ListRepositories($first: Int, $externalService: ID) {
+      repositories(first: $first, externalService: $externalService) {
+        nodes {
+          id
+          name
+        }
+        totalCount
+      }
+  }`
 };
 
 // FUNCTION TO CREATE A GRAPHQL QUERY

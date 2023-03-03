@@ -1,11 +1,11 @@
 {
   "scenarios": {
-    "search_performance_test": {
+    "list_repos_performance_test": {
       "executor": "constant-arrival-rate",
       "rate": 5,
       "preAllocatedVUs": 2,
       "maxVUs": 20,
-      "duration": "1m"
+      "duration": "15m"
     }
   }
 }
